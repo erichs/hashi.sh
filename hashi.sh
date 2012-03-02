@@ -7,11 +7,9 @@ set -e
 
 hsh_store()
 {
-    hsh_save_options && set +u
     local topic=$1 bucket=$2 key=$3 val=$4
     local fullkey=$(hsh_escape_key "__${topic}_${bucket}_${key}")
     eval "$fullkey='$val'"
-    hsh_restore_options
 }
 
 hsh_get()
