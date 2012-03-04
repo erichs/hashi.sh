@@ -53,7 +53,7 @@ main() {
     [ "$val" == "long value here" ] || flunk "Didn't get long value!"
     pass
 
-    label "hsh_get fails to retrieves unknown key"
+    label "hsh_get fails to retrieve unknown key"
     val=$(hsh_get some unknown key)
     [ "$val" == "" ] || flunk "Expected NULL, got: $val"
     pass
