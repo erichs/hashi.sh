@@ -42,6 +42,10 @@ pass() {
     echo -e "${GREEN}OK!${RESET}"
 }
 
+assert() {
+    eval "$*" && pass
+}
+
 label() {
     if [ -f .testnum ]; then
         TESTNUM=`cat .testnum`
