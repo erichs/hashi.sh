@@ -27,7 +27,7 @@ stop_clock() {
     echo "Testing took: $((END_TIME - START_TIME)) secs."
 }
 
-cleanup() {
+teardown() {
     cd ..
     rm -rf test_repo 2>/dev/null
     stop_clock

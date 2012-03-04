@@ -58,7 +58,7 @@ main() {
     [ "$val" == "" ] || flunk "Expected NULL, got: $val"
     pass
 
-    cleanup
+    teardown
 }
 
 main
