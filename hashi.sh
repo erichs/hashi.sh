@@ -27,5 +27,5 @@ hsh_keys() { local hash=$1
 }
 
 hsh_size() { local hash=$1
-    hsh_keys $hash | wc -l
+    echo $(hsh_keys $hash | wc -l)
 }
