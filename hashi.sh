@@ -17,4 +17,11 @@ hsh_get() { local hash=$1 key=$2
     echo ${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset | set -u
 }
 
-
+hsh_keys() { local hash=$1
+    local prefix="__${hash}_"
+    local vars
+    eval vars="\${!$prefix*}"
+    for var in $vars; do
+        echo ${var#$prefix}
+    done
+}
