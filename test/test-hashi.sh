@@ -12,42 +12,32 @@ main() {
 
     echo 'running tests for hashi.sh...'
 
-    label 'hsh_store accepts alpha'
-    hsh_store topic bucket key val
-    assert [ $? == 0 ] || flunk 'Failed to store alpha!'
+    label stores alpha
+    assert hsh_store topic bucket key val
 
-    label 'hsh_store accepts numeric'
-    hsh_store 1 2 3 4
-    assert [ $? == 0 ] || flunk 'Failed to store numeric!'
+    label stores numeric
+    assert hsh_store 1 2 3 4
 
-    label 'hsh_store accepts alphanum with hypens'
-    hsh_store topic-1 bucket-2 key-3 value-4
-    assert [ $? == 0 ] || flunk 'Failed to store numeric!'
+    label stores alphanum with hypens
+    assert hsh_store topic-1 bucket-2 key-3 value-4
 
-    label 'hsh_store accepts long value'
-    hsh_store ltopic lbucket lkey 'long value here'
-    assert [ $? == 0 ] || flunk 'Failed to store long value!'
+    label stores long value
+    assert hsh_store ltopic lbucket lkey \'long value here\'
 
-    local val
-    label 'hsh_get retrieves alpha'
-    val=$(hsh_get topic bucket key)
-    assert [ $val == val ] || flunk 'Failed to get alpha!'
+    label retrieves alpha
+    assert [ $(hsh_get topic bucket key) == val ]
 
-    label 'hsh_get retrieves numeric'
-    val=$(hsh_get 1 2 3)
-    assert [ $val == 4 ] || flunk 'Failed to get numeric!'
+    label retrieves numeric
+    assert [ $(hsh_get 1 2 3) == 4 ]
 
-    label 'hsh_get retrieves alphanum with hypens'
-    val=$(hsh_get topic-1 bucket-2 key-3)
-    assert [ $val == value-4 ] || flunk 'Failed to get alphanum with hypens!'
+    label retrieves alphanum with hypens
+    assert [ $(hsh_get topic-1 bucket-2 key-3) == value-4 ]
 
-    label 'hsh_get retrieves long value'
-    val=$(hsh_get ltopic lbucket lkey)
-    assert [ \'$val\' == \'long value here\' ] || flunk 'Failed to get long value!'
+    label retrieves long value
+    assert [ \'$(hsh_get ltopic lbucket lkey)\' == \'long value here\' ]  # NB: escape '
 
-    label 'hsh_get fails to retrieve unknown key'
-    val=$(hsh_get some unknown key)
-    assert [ \'$val\' == \'\' ] || flunk 'Expected NULL, got: $val'
+    label fails to retrieve unknown key
+    assert [ \'$(hsh_get some unknown key)\' == \'\' ] # NB: escape '
 
     teardown
 }
