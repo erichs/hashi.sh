@@ -80,7 +80,7 @@ start_clock() {
 
 stop_clock() {
     END_TIME=$(date +%s)
-    echo "Testing took: $((END_TIME - START_TIME)) secs."
+    echo "Running $(basename $0) took: $((END_TIME - START_TIME)) secs."
 }
 
 teardown() {
