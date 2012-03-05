@@ -25,3 +25,7 @@ hsh_keys() { local hash=$1
         echo ${var#$prefix}
     done
 }
+
+hsh_size() { local hash=$1
+    hsh_keys $hash | wc -l
+}
