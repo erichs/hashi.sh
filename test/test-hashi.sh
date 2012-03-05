@@ -34,13 +34,13 @@ main() {
     assert [ $(hsh_get hash key-2) == value-2 ]
 
     label retrieves long value
-    assert [ \'$(hsh_get hash lkey)\' == \'long value here\' ]  # NB: escape '
+    assert [ \'$(hsh_get hash lkey)\' == \'long value here\' ]  # '
 
     label fails to retrieve unknown key
-    assert [ \'$(hsh_get hash unknown key)\' == \'\' ] # NB: escape '
+    assert [ \'$(hsh_get hash unknown key)\' == \'\' ] # '
 
     label get hash keys
-    assert [ ! -z "$(hsh_keys hash)" ]
+    assert [ ! -z \'$(hsh_keys hash)\' ] # '
 
     teardown
 }
