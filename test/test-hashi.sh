@@ -3,6 +3,8 @@
 set -e
 source init.inc
 
+trap teardown EXIT
+
 REV=$1
 SCRIPT='./hashi.sh'
 
@@ -44,6 +46,9 @@ main() {
 
     label valid keys length
     assert [ $(hsh_keys hash | wc -l) == 4 ]
+
+    label get hash size
+    assert hsh_size hash
 
     teardown
 }
