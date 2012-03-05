@@ -42,6 +42,9 @@ main() {
     label get hash keys
     assert [ ! -z \'$(hsh_keys hash)\' ] # '
 
+    label valid keys length
+    assert [ $(hsh_keys hash | wc -l) == 4 ]
+
     teardown
 }
 
