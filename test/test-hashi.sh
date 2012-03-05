@@ -28,16 +28,16 @@ main() {
     assert [ $(hsh_get hash key) == val ]
 
     label retrieves numeric
-    assert [ $(hsh_get 2) == 3 ]
+    assert [ $(hsh_get hash 2) == 3 ]
 
     label retrieves alphanum with hypens
-    assert [ $(hsh_get key-2) == value-2 ]
+    assert [ $(hsh_get hash key-2) == value-2 ]
 
     label retrieves long value
-    assert [ \'$(hsh_get lkey)\' == \'long value here\' ]  # NB: escape '
+    assert [ \'$(hsh_get hash lkey)\' == \'long value here\' ]  # NB: escape '
 
     label fails to retrieve unknown key
-    assert [ \'$(hsh_get unknown key)\' == \'\' ] # NB: escape '
+    assert [ \'$(hsh_get hash unknown key)\' == \'\' ] # NB: escape '
 
     teardown
 }
