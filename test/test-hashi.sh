@@ -39,6 +39,9 @@ main() {
     label fails to retrieve unknown key
     assert [ \'$(hsh_get hash unknown key)\' == \'\' ] # NB: escape '
 
+    label get hash keys
+    assert [ ! -z "$(hsh_keys hash)" ]
+
     teardown
 }
 
