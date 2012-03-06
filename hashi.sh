@@ -29,3 +29,17 @@ hsh_keys() { local hash=$1
 hsh_size() { local hash=$1
     echo $(hsh_keys $hash | wc -l)
 }
+
+hsh_rm() { local hash=$1 key=${2:-}
+    if [ -z "$key" ]; then
+        echo "NOT IMPLEMENTED YET"
+        exit 1
+    else
+        hsh_unset_key "$hash" "$key"
+    fi
+}
+
+hsh_unset_key() { local hash=$1 key=$2
+    local fullkey=$(hsh_escape "__${hash}_SNIP_${key}")
+    unset -v $fullkey
+}
