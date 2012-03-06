@@ -47,10 +47,8 @@ hsh_generate_key() { local hash=$1 key=${2:-}
 }
 
 hsh_unset_hash() { local hash=$1
-    local fullkey
     for key in $(hsh_keys $hash); do
-        fullkey=$(hsh_generate_key $hash $key)
-        unset -v $fullkey
+        hsh_unset_key $hash $key
     done
 }
 
