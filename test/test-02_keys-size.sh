@@ -38,6 +38,11 @@ main() {
     hsh_set tst-h key1 val1
     assert [ $(hsh_keys tst | wc -l) == $(hsh_keys tst-h | wc -l) ]
 
+    label hsh_size handles hyphens
+    hsh_set tst2 key1 val1
+    hsh_set tst2-h key1 val1
+    assert [ $(hsh_size tst2) == $(hsh_size tst2-h) ]
+
 }
 
 main
