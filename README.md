@@ -1,4 +1,4 @@
- hashi.sh - Hierarchical Key/Value Store for Bash
+ hashi.sh - Key/Value Store for Bash
 ===================================
 
 ## Really?
@@ -10,9 +10,9 @@ good enough. On the plus-side, it's in memory and relatively fast.
 ## Why would I use this?
 
 You probably wouldn't. I use it to load snippets of text into the shell for frequent and
-fast programmatic access. 
+fast programmatic access.
 
-Potential uses: 
+Potential uses:
 
 * hardware catalog
 * phone directory
@@ -23,23 +23,17 @@ Potential uses:
 * retrieve a count or list of unique keys stored
 * etc...
 
-## Why Hierarchical?
-
-So we can store keys in related groupings.  Since we're storing into ENV variables, this creates
-a sort of 'namespace'.  Hashi.sh calls these namespaces 'topics'.  Topics contain buckets, which 
-contain keys, which have values.
-
 ## Show me
 
 Sure:
 
 ```bash
     $ source hashi.sh
-    $ hsh_store hosts machine1 fqdn machine1.somewhere.net
-    $ hsh_store hosts machine1 hw "Dell Poweredge 1950"
-    $ hsh_store hosts machine1 user billybob
+    $ hsh_set machine1 fqdn machine1.somewhere.net
+    $ hsh_set machine1 hw "Dell Poweredge 1950"
+    $ hsh_set machine1 user billybob
 
-    $ echo "FQDN: $(hsh_get hosts machine1 fqdn)"
+    $ echo "FQDN: $(hsh_get machine1 fqdn)"
 ```
 This software is released into the public domain.  Please use it responsibly.
 
