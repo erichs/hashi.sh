@@ -48,9 +48,8 @@ main() {
     assert [ $(hsh_keys hash | wc -l) == 4 ]
 
     label get hash size
-    assert hsh_size hash
+    assert [ $(hsh_size hash) == 4 ]
 
-    teardown
 }
 
 main
