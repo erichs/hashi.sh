@@ -29,6 +29,10 @@ main() {
 
     label keys does not display removed key
     assert [ -z "$(hsh_keys hash | grep key2)" ]
+
+    label rm removes hash
+    hsh_rm hash
+    assert [ $(hsh_size hash) == 0 ]
 }
 
 main
