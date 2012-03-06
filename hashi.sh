@@ -40,7 +40,7 @@ hsh_rm() { local hash=$1 key=${2:-}
 #### internal helper methods
 
 hsh_unset_key() { local hash=$1 key=$2
-    local fullkey=$(hsh_escape "__${hash}_SNIP_${key}")
+    local fullkey=$(hsh_generate_key $hash $key)
     unset -v $fullkey
 }
 
