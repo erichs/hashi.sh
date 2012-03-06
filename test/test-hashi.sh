@@ -16,26 +16,27 @@ main() {
 
     label sets alpha
     assert hsh_set hash key val
+    label gets alpha
+    assert [ $(hsh_get hash key) == val ]
 
     label sets numeric
     assert hsh_set hash 2 3
+    label gets numeric
+    assert [ $(hsh_get hash 2) == 3 ]
+
+    label sets hyphen-hash
+    assert hsh_set hyphen-hash key val
+    label gets hyphen-hash
+    assert [ $(hsh_get hyphen-hash key) == val ]
 
     label sets alphanum with hypens
-    assert hsh_set hash key-2 value-2
+    assert hsh_set hash-1 key-2 value-2
+    label gets alphanum with hypens
+    assert [ $(hsh_get hash-1 key-2) == value-2 ]
 
     label sets long value
     assert hsh_set hash lkey \'long value here\'
-
-    label retrieves alpha
-    assert [ $(hsh_get hash key) == val ]
-
-    label retrieves numeric
-    assert [ $(hsh_get hash 2) == 3 ]
-
-    label retrieves alphanum with hypens
-    assert [ $(hsh_get hash key-2) == value-2 ]
-
-    label retrieves long value
+    label gets long value
     assert [ \'$(hsh_get hash lkey)\' == \'long value here\' ]  # '
 
     label fails to retrieve unknown key
@@ -49,6 +50,19 @@ main() {
 
     label get hash size
     assert [ $(hsh_size hash) == 4 ]
+
+    label undef size is zero
+    assert [ $(hsh_size undefined) == 0 ]
+
+    label hsh_keys handles hyphens
+    hsh_set tst key1 val1
+    hsh_set tst key2 val2
+    hsh_set tst-hyphen key1 val1
+    hsh_set tst-hyphen key2 val2
+    tst_size=$(hsh_keys tst | wc -l)
+    tsthyphen_size=$(hsh_keys tst-hyphen | wc -l)
+    assert [ $tst_size == $tsthyphen_size ]
+
 
 }
 
