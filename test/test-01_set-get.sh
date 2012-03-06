@@ -12,7 +12,7 @@ main() {
     setup $REV
     source $SCRIPT
 
-    echo 'running tests for hashi.sh...'
+    echo 'GET and SET methods...'
 
     label sets alpha
     assert hsh_set hash key val
@@ -41,26 +41,6 @@ main() {
 
     label fails to retrieve unknown key
     assert [ \'$(hsh_get hash unknown key)\' == \'\' ] # '
-
-    label get hash keys
-    assert [ ! -z \'$(hsh_keys hash)\' ] # '
-
-    label valid keys length
-    assert [ $(hsh_keys hash | wc -l) == 3 ]
-
-    label valid keys content
-    assert [ $(hsh_keys hash | grep lkey) == lkey ]
-
-    label get hash size
-    assert [ $(hsh_size hash) == 3 ]
-
-    label undef size is zero
-    assert [ $(hsh_size undefined) == 0 ]
-
-    label hsh_keys handles hyphens
-    hsh_set tst key1 val1
-    hsh_set tst-h key1 val1
-    assert [ $(hsh_keys tst | wc -l) == $(hsh_keys tst-h | wc -l) ]
 
 }
 
