@@ -56,13 +56,11 @@ main() {
 
     label hsh_keys handles hyphens
     hsh_set tst key1 val1
-    hsh_set tst key2 val2
-    hsh_set tst-hyphen key1 val1
-    hsh_set tst-hyphen key2 val2
+    hsh_set tst-h key1 val1
     tst_size=$(hsh_keys tst | wc -l)
-    tsthyphen_size=$(hsh_keys tst-hyphen | wc -l)
-    assert [ $tst_size == $tsthyphen_size ]
+    tsth_size=$(hsh_keys tst-h | wc -l)
 
+    assert [ $tst_size == $tsth_size ]
 
 }
 
