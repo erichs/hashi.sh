@@ -25,7 +25,7 @@ fixture() {
     # the parent git repo, and using that to test against
 
     local REV=$(git rev-parse --short HEAD)  # default to HEAD when no revision argument is specified
-    if [ ! -z "$1" ]; then
+    if [ $# -gt 0 ]; then
         REV=$1
     fi
     echo "Setting up fixture repo for revision $REV..."
@@ -70,7 +70,7 @@ pass() {
 
 setup() {
     start_clock
-    REV=$1
+    REV=${1:-}
     fixture $REV  # load Git revision in test repository
 }
 

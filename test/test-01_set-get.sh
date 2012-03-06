@@ -1,11 +1,13 @@
 #!/bin/bash
 
 set -e
+set -u
+
 source init.inc
 
 trap teardown EXIT # guarantee fixture teardown
 
-REV=$1
+REV=${1:-}
 SCRIPT='./hashi.sh'
 
 main() {
