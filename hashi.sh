@@ -30,8 +30,7 @@ hsh_size() { local hash=$1
 
 hsh_rm() { local hash=$1 key=${2:-}
     if [ -z "$key" ]; then
-        echo "NOT IMPLEMENTED YET"
-        exit 1
+        hsh_unset_hash "$hash"
     else
         hsh_unset_key "$hash" "$key"
     fi
@@ -39,16 +38,24 @@ hsh_rm() { local hash=$1 key=${2:-}
 
 #### internal helper methods
 
-hsh_unset_key() { local hash=$1 key=$2
-    local fullkey=$(hsh_generate_key $hash $key)
-    unset -v $fullkey
+hsh_escape() { local str=$1
+    echo ${str//-/___}  # bash doesn't allow hyphens in variable names. bummer.
 }
 
 hsh_generate_key() { local hash=$1 key=${2:-}
     hsh_escape "__${hash}_SNIP_${key}"
 }
 
-hsh_escape() { local str=$1
-    echo ${str//-/___}  # bash doesn't allow hyphens in variable names. bummer.
+hsh_unset_hash() { local hash=$1
+    local fullkey
+    for key in $(hsh_keys $hash); do
+        fullkey=$(hsh_generate_key $hash $key)
+        unset -v $fullkey
+    done
+}
+
+hsh_unset_key() { local hash=$1 key=$2
+    local fullkey=$(hsh_generate_key $hash $key)
+    unset -v $fullkey
 }
 
