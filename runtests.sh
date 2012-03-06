@@ -1,6 +1,8 @@
 #!/bin/bash
 
 set -e
+set -u
+
 (
     cd test
     source ./init.inc
