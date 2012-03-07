@@ -14,7 +14,7 @@ main() {
     setup $REV
     source $SCRIPT
 
-    echo 'VALUES METHOD...'
+    echo 'VALUES and GETALL METHODS...'
 
     hsh_set hash key1 val1
     hsh_set hash key2 val3
@@ -29,6 +29,10 @@ main() {
 
     label values contains correct string
     assert [ $(hsh_values hash | grep val1) == val1 ]
+
+    label getall is implemented
+    hsh_getall hash >/dev/null
+    assert [ $? == 0 ]
 }
 
 main
