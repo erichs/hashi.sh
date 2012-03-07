@@ -14,7 +14,7 @@ main() {
     setup $REV
     source $SCRIPT
 
-    echo 'KEYS and SIZE methods...'
+    discreet_echo 'KEYS and SIZE methods...'
 
     hsh_set hash key1 val1
     hsh_set hash key2 val3

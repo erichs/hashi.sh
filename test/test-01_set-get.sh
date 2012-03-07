@@ -14,7 +14,7 @@ main() {
     setup $REV
     source $SCRIPT
 
-    echo 'GET and SET methods...'
+    discreet_echo 'GET and SET methods...'
 
     label sets alpha
     assert hsh_set hash key val

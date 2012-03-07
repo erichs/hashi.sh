@@ -14,7 +14,7 @@ RESET="\033[0;37;00m"
 
 assert() {
     if eval "$*"; then
-        pass
+       pass
     else
         flunk asserted $*
     fi
@@ -28,7 +28,7 @@ fixture() {
     if [ $# -gt 0 ]; then
         REV=$1
     fi
-    echo "Setting up fixture repo for revision $REV..."
+    discreet_echo "Setting up fixture repo for revision $REV...\n"
 
     if [ -x test_repo ]; then
         rm -rf test_repo
@@ -36,7 +36,7 @@ fixture() {
 
 
     mkdir test_repo
-    cd test_repo
+    cd test_repo  >/dev/null
 
     git init --quiet
     (
@@ -49,23 +49,28 @@ fixture() {
 }
 
 flunk() {
-    echo -e "${RED}FAIL: $*${RESET}"
+    echo -e "${RED}$(basename $0) FAIL: $*${RESET}"
     exit 1
 }
 
-label() {
-    if [ -f .testnum ]; then
-        TESTNUM=`cat .testnum`
+discreet_echo() { local loudstr=$1 softstr=${2:-}
+    if [ -n "${VERBOSE:-}" ]; then
+        echo -en "$loudstr"
     else
-        TESTNUM=0
+        echo -en "$softstr"
     fi
-    TESTNUM=$((TESTNUM+1))
-    echo -n "$TESTNUM. $*... "
-    echo $TESTNUM > .testnum
+}
+
+label() {
+   if [ -z "${testnum:-}" ]; then
+       testnum=0
+   fi
+   testnum=$((testnum + 1))
+   discreet_echo "${testnum}. $*... "
 }
 
 pass() {
-    echo -e "${GREEN}OK!${RESET}"
+    discreet_echo "${GREEN}OK!${RESET}\n" "${GREEN}.${RESET}"
 }
 
 setup() {
@@ -79,12 +84,14 @@ start_clock() {
 }
 
 stop_clock() {
-    END_TIME=$(date +%s)
-    echo "Running $(basename $0) took: $((END_TIME - START_TIME)) secs."
+    local END_TIME=$(date +%s)
+    local total=$((END_TIME - START_TIME))
+    discreet_echo "\nRunning $(basename $0) took: $total secs.\n" "  ${total}s\n"
 }
 
 teardown() {
     local RC=$?
+    unset testnum
     cd ..
     rm -rf test_repo.gz 2>/dev/null
     rm -rf test_repo 2>/dev/null

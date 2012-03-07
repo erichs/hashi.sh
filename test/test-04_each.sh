@@ -14,7 +14,7 @@ main() {
     setup $REV
     source $SCRIPT
 
-    echo 'EACH METHOD...'
+    discreet_echo 'EACH METHOD...'
 
     hsh_set hash key1 val1
     hsh_set hash key2 val3

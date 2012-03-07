@@ -1,23 +1,40 @@
 #!/bin/bash
 
+source ./test/init.inc
+
+while getopts v arg
+do
+    case $arg in
+        v)    export VERBOSE=1
+              shift;;
+        ?)    echo "Usage: $(basename $0) [-v] [git rev]"
+              exit 1;;
+    esac
+done
+
+
 set -e
 set -u
 
 (
     cd test
-    source ./init.inc
 
     start_clock
 
+    rc=0
     for test in $(ls test-*.sh);
     do
         (
         ./$test ${1:-}
         )
+        rc=$?
     done
 
+    discreet_echo "" "total runtime: "
     stop_clock
-    echo -e "${GREEN}All tests complete.${RESET}"
+    if [ $rc == 0 ]; then
+        discreet_echo "${GREEN}All tests complete.${RESET}\n" "${GREEN}OK!${RESET}\n"
+    fi
 )
 
 exit 0

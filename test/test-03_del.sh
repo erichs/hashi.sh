@@ -14,7 +14,7 @@ main() {
     setup $REV
     source $SCRIPT
 
-    echo 'DEL METHOD...'
+    discreet_echo 'DEL METHOD...'
 
     hsh_set hash key1 val1
     hsh_set hash key2 val3
