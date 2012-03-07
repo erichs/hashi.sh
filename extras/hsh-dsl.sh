@@ -3,7 +3,7 @@
 hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
     if [ -z "$hash" ]; then
         hsh_usage
-        exit 1
+        return 1
     fi
     case $op in
         get)        hsh_enforce_parameter key
