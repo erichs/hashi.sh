@@ -33,6 +33,9 @@ main() {
     label getall is implemented
     hsh_getall hash >/dev/null
     assert [ $? == 0 ]
+
+    label getall is of correct size
+    assert [ $(hsh_getall hash | wc -l) == $(hsh_size hash) ]
 }
 
 main
