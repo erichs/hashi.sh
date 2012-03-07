@@ -28,6 +28,9 @@ main() {
     label hsh with one parameter gives usage
     assert [ $(hsh parm1 | greplines "Usage") == 1 ]
 
+    label hsh with unknown op gives usage
+    assert [ $(hsh unknown_op hash | greplines "Usage") == 1 ]
+
     label 'hsh get hash' is error
     assert [ $(hsh get hash | greplines "must provide key") == 1 ]
 
