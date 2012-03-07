@@ -12,16 +12,17 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
                     hsh_enforce_parameter value
                     hsh_set $hash $key $value;;
         ?)          hsh_usage
-                    exit 1;;
+                    return 1;;
     esac
 }
 
 hsh_enforce_parameter() { local parm=$1
     if [ -z "${!parm}" ]; then
         echo "must provide $parm with this operation!"
-        exit 1
+        return 1
     fi
 }
+
 
 hsh_usage() {
     echo "Usage: op hsh some usage here"
