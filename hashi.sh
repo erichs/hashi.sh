@@ -28,7 +28,7 @@ hsh_size() { local hash=$1
     echo $(hsh_keys $hash | wc -l)
 }
 
-hsh_rm() { local hash=$1 key=${2:-}
+hsh_del() { local hash=$1 key=${2:-}
     if [ -z "$key" ]; then
         hsh_unset_hash "$hash"
     else
