@@ -1,8 +1,6 @@
 #!/bin/bash
 # hashi.sh - ultra-simple key/value hash
 
-set -e
-
 #### API: use these primitives in your script
 
 hsh_set() { local hash=$1 key=$2 val=$3
