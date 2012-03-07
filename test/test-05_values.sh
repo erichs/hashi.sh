@@ -23,6 +23,8 @@ main() {
     label values is implemented
     assert hsh_values hash
 
+    label values is of correct size
+    assert [ $(hsh_values hash | wc -l) == $(hsh_size hash) ]
 }
 
 main
