@@ -9,7 +9,7 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
                     hsh_get $hash $key;;
         set)        hsh_enforce_parameter key
                     hsh_enforce_parameter value
-                    :;;
+                    hsh_set $hash $key $value;;
     esac
 }
 
