@@ -12,7 +12,7 @@ hsh_set() { local hash=$1 key=$2 val=$3
 
 hsh_get() { local hash=$1 key=$2
     local fullkey=$(hsh_generate_key $hash $key)
-    echo ${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset | set -u
+    echo ${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset, aka set -u
 }
 
 hsh_keys() { local hash=$1
@@ -25,7 +25,9 @@ hsh_keys() { local hash=$1
 }
 
 hsh_size() { local hash=$1
-    echo $(hsh_keys $hash | wc -l)
+    local size=0
+    for key in $(hsh_keys $hash); do size=$((size + 1)); done
+    echo $size
 }
 
 hsh_del() { local hash=$1 key=${2:-}
