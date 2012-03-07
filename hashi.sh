@@ -45,6 +45,10 @@ hsh_each() { local hash=$1 code=$2
     done
 }
 
+hsh_values() { local hash=$1
+   hsh_each $hash 'echo $value'
+}
+
 #### internal helper methods
 
 hsh_escape() { local str=$1
