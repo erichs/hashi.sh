@@ -27,6 +27,10 @@ main() {
 
     label hsh with one parameter gives usage
     assert [ $(hsh parm1 | grep "Usage" | wc -l) == 1 ]
+
+    label hsh with get hash key retrieves value
+    hsh_set hash key val
+    assert [ $(hsh get hash key | grep "val") == val ]
 }
 
 main
