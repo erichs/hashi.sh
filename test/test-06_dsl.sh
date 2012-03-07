@@ -22,6 +22,9 @@ main() {
     hsh >/dev/null
     assert [ $? == 0 ]
 
+    label hsh without parameters gives usage
+    assert [ $(hsh | grep "Usage" | wc -l) == 1 ]
+
 }
 
 main
