@@ -49,6 +49,10 @@ hsh_values() { local hash=$1
    hsh_each $hash 'echo $value'
 }
 
+hsh_getall() { local hash=$1
+    :
+}
+
 #### internal helper methods
 
 hsh_escape() { local str=$1
