@@ -38,7 +38,7 @@ main() {
     assert [ $(hsh_getall hash | wc -l) == $(hsh_size hash) ]
 
     label getall contains correct string
-    assert [ \"$(hsh_getall hash | grep "key1: val1")\" == \"key1: val1\" ]
+    assert [ \"$(hsh_getall hash | grep "key1: val1")\" == \"key1: val1\" ] #"
 }
 
 main
