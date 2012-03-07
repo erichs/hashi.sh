@@ -14,8 +14,8 @@ set -u
         ./$test ${1:-}
     done
 
-    echo "${GREEN}All tests complete.${RESET}"
     stop_clock
+    echo -e "${GREEN}All tests complete.${RESET}"
 )
 
 exit 0
