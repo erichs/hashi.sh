@@ -16,7 +16,7 @@ assert() {
     if eval "$*"; then
         pass
     else
-        flunk asserted $*
+        flunk $label: asserted $*
     fi
 }
 
@@ -62,11 +62,12 @@ discreet_echo() { local loudstr=$1 softstr=${2:-}
 }
 
 label() {
+   label=$*
    if [ -z "${testnum:-}" ]; then
        testnum=0
    fi
    testnum=$((testnum + 1))
-   discreet_echo "${testnum}. $*... "
+   discreet_echo "${testnum}. $label... "
 }
 
 pass() {
