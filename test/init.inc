@@ -101,3 +101,7 @@ teardown() {
         flunk "One or more tests did not pass!"
     fi
 }
+
+greplines() { local grepstr=${1:-}
+    echo $(grep "$grepstr" | wc -l)
+}

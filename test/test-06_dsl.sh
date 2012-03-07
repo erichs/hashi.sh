@@ -23,20 +23,20 @@ main() {
     assert [ $? == 0 ]
 
     label hsh without parameters gives usage
-    assert [ $(hsh | grep "Usage" | wc -l) == 1 ]
+    assert [ $(hsh | greplines "Usage") == 1 ]
 
     label hsh with one parameter gives usage
-    assert [ $(hsh parm1 | grep "Usage" | wc -l) == 1 ]
+    assert [ $(hsh parm1 | greplines "Usage") == 1 ]
 
     label 'hsh get hash' is error
-    assert [ $(hsh get hash | grep "must provide key" | wc -l) == 1 ]
+    assert [ $(hsh get hash | greplines "must provide key") == 1 ]
 
     label 'hsh get hash key' retrieves value
     hsh_set hash key val
     assert [ $(hsh get hash key | grep "val") == val ]
 
     label 'hsh set hash' is error
-    assert [ $(hsh set hash | grep "must provide key" | wc -l) == 1 ]
+    assert [ $(hsh set hash | greplines "must provide key") == 1 ]
 }
 
 main
