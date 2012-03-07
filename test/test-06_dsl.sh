@@ -18,11 +18,11 @@ main() {
 
     discreet_echo 'DSL EXTENSION...\n'
 
-    ( set +e
-        label hsh is implemented
-        hsh >/dev/null
-        assert [ $? == 1 ]
-    )
+    set +e
+
+    label hsh is implemented
+    hsh >/dev/null
+    assert [ $? == 1 ]
 
     label hsh without parameters gives usage
     assert [ $(hsh | greplines "Usage") == 1 ]
@@ -35,6 +35,8 @@ main() {
 
     label 'hsh get hash' is error
     assert [ $(hsh get hash | greplines "must provide key") == 1 ]
+
+    set -e
 
     label 'hsh get hash key' retrieves value
     hsh_set hash key val
