@@ -40,6 +40,13 @@ main() {
 
     label 'hsh set hash key' is error
     assert [ $(hsh set hash key | greplines "must provide value") == 1 ]
+
+    label 'hsh set hash key2 val2' sets value
+    hsh set hash key2 val2
+    assert [ $(hsh get hash key2) == val2 ]
+
+
+
 }
 
 main
