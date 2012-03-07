@@ -1,7 +1,7 @@
 #!/bin/bash
 
-hsh() { local parm=${1:-}
-    if [ -z "$parm" ]; then
-        echo "Usage: hsh some usage here"
+hsh() { local op=${1:-} hash=${2:-}
+    if [ -z "$hash" ]; then
+        echo "Usage: op hsh some usage here"
     fi
 }
