@@ -18,9 +18,11 @@ main() {
 
     discreet_echo 'DSL EXTENSION...\n'
 
-    label hsh is implemented
-    hsh >/dev/null
-    assert [ $? == 0 ]
+    ( set +e
+        label hsh is implemented
+        hsh >/dev/null
+        assert [ $? == 1 ]
+    )
 
     label hsh without parameters gives usage
     assert [ $(hsh | greplines "Usage") == 1 ]
