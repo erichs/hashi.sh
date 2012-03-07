@@ -46,7 +46,7 @@ hsh_each() { local hash=$1 code=$2
 }
 
 hsh_values() { local hash=$1
-    :
+   hsh_each $hash 'echo $value'
 }
 
 #### internal helper methods
