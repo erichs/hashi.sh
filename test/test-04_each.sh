@@ -21,7 +21,7 @@ main() {
     hsh_set hash key3 val3
 
     label each iterates over all keys
-    assert [ $(hsh_each hash \'echo foo\' | wc -l) == 3 ]
+    assert [ $(hsh_each hash ''echo foo'' | wc -l) == 3 ]
 
 }
 
