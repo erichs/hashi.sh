@@ -11,7 +11,9 @@ set -u
 
     for test in $(ls test-*.sh);
     do
+        (
         ./$test ${1:-}
+        )
     done
 
     stop_clock
