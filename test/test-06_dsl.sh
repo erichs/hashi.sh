@@ -25,6 +25,8 @@ main() {
     label hsh without parameters gives usage
     assert [ $(hsh | grep "Usage" | wc -l) == 1 ]
 
+    label hsh with one parameter gives usage
+    assert [ $(hsh parm1 | grep "Usage" | wc -l) == 1 ]
 }
 
 main
