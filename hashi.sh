@@ -38,6 +38,13 @@ hsh_del() { local hash=$1 key=${2:-}
     fi
 }
 
+hsh_each() { local hash=$1 code=$2
+    for key in $(hsh_keys "$hash"); do
+        value=$(hsh_get "$hash" "$key")
+        eval "$code"
+    done
+}
+
 #### internal helper methods
 
 hsh_escape() { local str=$1
