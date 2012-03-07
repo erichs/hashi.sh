@@ -39,4 +39,4 @@ This software is released into the public domain.  Please use it responsibly.
 
 Enjoy.
 
-> If a man wishes to rid himself of a feeling of unbearable oppression, he may have to take hashish. -- Friedrich Nietzsche
+> If a man wishes to rid himself of a feeling of unbearable oppression, he may have to take hashi.sh. -- Friedrich Nietzsche
