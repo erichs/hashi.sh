@@ -84,7 +84,11 @@ stop_clock() {
 }
 
 teardown() {
+    local RC=$?
     cd ..
     rm -rf test_repo 2>/dev/null
     stop_clock
+    if [ $RC -ne 0 ]; then
+        flunk "One or more tests did not pass!"
+    fi
 }
