@@ -14,7 +14,7 @@ RESET="\033[0;37;00m"
 
 assert() {
     if eval "$*"; then
-       pass
+        pass
     else
         flunk asserted $*
     fi
