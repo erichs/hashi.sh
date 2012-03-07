@@ -24,6 +24,7 @@ set -u
     rc=0
     for test in $(ls test-*.sh);
     do
+        [ $rc != 0 ] && continue
         (
         ./$test ${1:-}
         )
