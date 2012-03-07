@@ -50,7 +50,7 @@ hsh_values() { local hash=$1
 }
 
 hsh_getall() { local hash=$1
-    :
+    hsh_each $hash 'echo $key: $value'
 }
 
 #### internal helper methods
