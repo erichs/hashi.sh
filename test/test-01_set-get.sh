@@ -37,12 +37,12 @@ main() {
     assert [ $(hsh_get hash-1 key-2) == value-2 ]
 
     label sets long value
-    assert hsh_set hash lkey \'long value here\'
+    assert hsh_set hash lkey '"long value here"'
     label gets long value
-    assert [ \'$(hsh_get hash lkey)\' == \'long value here\' ]  # '
+    assert [ '"$(hsh_get hash lkey)"' == '"long value here"' ]
 
     label fails to retrieve unknown key
-    assert [ \'$(hsh_get hash unknown key)\' == \'\' ] # '
+    assert [ '"$(hsh_get hash unknown key)"' == '""' ]
 
 }
 

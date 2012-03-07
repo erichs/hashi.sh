@@ -22,13 +22,13 @@ main() {
 
     label del removes key
     hsh_del hash key2
-    assert [ -z "$(hsh_get hash key2)" ]
+    assert [ -z '"$(hsh_get hash key2)"' ]
 
     label del decrements size
     assert [ $(hsh_size hash) == 2 ]
 
     label keys does not display removed key
-    assert [ -z "$(hsh_keys hash | grep key2)" ]
+    assert [ -z '"$(hsh_keys hash | grep key2)"' ]
 
     label del removes hash
     hsh_del hash

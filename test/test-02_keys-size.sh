@@ -21,7 +21,7 @@ main() {
     hsh_set hash key3 val3
 
     label get hash keys
-    assert [ ! -z \'$(hsh_keys hash)\' ] # '
+    assert [ ! -z '"$(hsh_keys hash)"' ]
 
     label valid keys length
     assert [ $(hsh_keys hash | wc -l) == 3 ]
