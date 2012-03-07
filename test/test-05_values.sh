@@ -26,6 +26,9 @@ main() {
 
     label values is of correct size
     assert [ $(hsh_values hash | wc -l) == $(hsh_size hash) ]
+
+    label values contains correct string
+    assert [ $(hsh_values hash | grep val1) == val1 ]
 }
 
 main
