@@ -21,7 +21,8 @@ main() {
     hsh_set hash key3 val3
 
     label values is implemented
-    assert hsh_values hash
+    hsh_values hash >/dev/null
+    assert [ $? == 0 ]
 
     label values is of correct size
     assert [ $(hsh_values hash | wc -l) == $(hsh_size hash) ]
