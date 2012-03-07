@@ -1,6 +1,6 @@
 #!/bin/bash
 
-hsh() { local op=${1:-} hash=${2:-} key=${3:-}
+hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
     if [ -z "$hash" ]; then
         echo "Usage: op hsh some usage here"
     fi
@@ -8,6 +8,7 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-}
         get)        hsh_enforce_parameter key
                     hsh_get $hash $key;;
         set)        hsh_enforce_parameter key
+                    hsh_enforce_parameter value
                     :;;
     esac
 }
