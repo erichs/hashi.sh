@@ -12,4 +12,10 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-}
     esac
 }
 
+hsh_enforce_parameter() { local parm=$1
+    if [ -z "${!parm}" ]; then
+        echo "must provide $parm with this operation!"
+        exit 1
+    fi
+}
 
