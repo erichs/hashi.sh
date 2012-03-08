@@ -9,7 +9,8 @@ good enough. On the plus-side, it's in memory and relatively fast.
 
 ## Why would I use this?
 
-You probably wouldn't. I use it to load snippets of text into the shell for frequent and
+You might use hashi.sh if you're reaching for a Bash solution but don't quite yet want to 
+break into Ruby/Python/Perl, &c. I use it to load snippets of text into the shell for frequent and
 fast programmatic access.
 
 Potential uses:
