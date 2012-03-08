@@ -52,7 +52,12 @@ main() {
     hsh set hash key2 val2
     assert [ $(hsh get hash key2) == val2 ]
 
+    label 'hsh get hash boguskey' gives empty string
+    assert [ $(hsh get hash boguskey) == '' ]
 
+    label 'hsh get hash boguskey' gives error code
+    hsh get hash boguskey >/dev/null 2>&1
+    assert [ $? == 1 ]
 
 }
 
