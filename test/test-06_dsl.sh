@@ -92,6 +92,10 @@ main() {
 
     set -e
 
+    label 'hsh size hash' gives correct size
+    assert [ $(hsh size hash) == 2 ]
+
+
 }
 
 main
