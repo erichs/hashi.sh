@@ -40,6 +40,10 @@ main() {
     hsh get hash boguskey >/dev/null 2>&1
     assert [ $? == 1 ]
 
+    label 'hsh rm hash' does not return error
+    hsh rm hash >/dev/null 2>&1
+    assert [ $? == 0 ]
+
     set -e
 
     label 'hsh get hash key' retrieves value
@@ -58,7 +62,6 @@ main() {
 
     label 'hsh get hash boguskey' gives empty string
     assert [ $(hsh get hash boguskey) == '' ]
-
 
 }
 
