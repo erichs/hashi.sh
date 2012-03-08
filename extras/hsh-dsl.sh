@@ -63,4 +63,5 @@ hsh_usage() {
     echo "   get   :requires key argument"
     echo "   set   :requires key and value arguments"
     echo "   del   :requires key and/or value arguments"
+    echo "   keys"
 }
