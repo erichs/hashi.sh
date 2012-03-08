@@ -12,6 +12,7 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
                     hsh_check_arg value || return 1
                     hsh_set $hash $key $value;;
         del)        hsh_attempt_del $hash $key;;
+        keys)       hsh_attempt_keys $hash;;
         *)          hsh_usage
                     return 1;;
     esac
@@ -42,6 +43,16 @@ hsh_attempt_get() { local hash=$1 key=$2
         return 1
     else
         echo $keyval
+        return 0
+    fi
+}
+
+hsh_attempt_keys() { local hash=$1
+    local keys=$(hsh_keys $hash)
+    if [ -z "$keys" ]; then
+        return 1
+    else
+        echo "$keys"
         return 0
     fi
 }
