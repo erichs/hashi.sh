@@ -86,6 +86,10 @@ main() {
     hsh keys hash >/dev/null 2>&1
     assert [ $? == 0 ]
 
+    label 'hsh size hash' does not return error
+    hsh size hash >/dev/null 2>&1
+    assert [ $? == 0 ]
+
     set -e
 
 }
