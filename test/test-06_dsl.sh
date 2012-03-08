@@ -42,6 +42,9 @@ main() {
     label usage contains del op
     assert [ $(hsh unknown_op hash | greplines "del") == 1 ]
 
+    label usage contains keys op
+    assert [ $(hsh unknown_op hash | greplines "keys") == 1 ]
+
     label 'hsh get hash' is error
     assert [ $(hsh get hash | greplines "must provide key") == 1 ]
 
