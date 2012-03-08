@@ -68,6 +68,14 @@ main() {
     label 'hsh get hash boguskey' gives empty string
     assert [ $(hsh get hash boguskey) == '' ]
 
+    set +e
+
+    label 'hsh keys hash' does not return error
+    hsh keys hash >/dev/null 2>&1
+    assert [ $? == 0 ]
+
+    set -e
+
 }
 
 main
