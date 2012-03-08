@@ -29,7 +29,7 @@ hsh_attempt_del() { local hash=$1 key=${2:-}
     local before_size=$(hsh_size $hash)
     hsh_del $hash $key
     local after_size=$(hsh_size $hash)
-    if [ $before_size > $after_size ]; then
+    if [ $before_size -gt $after_size ]; then
         return 0
     else
         return 1
