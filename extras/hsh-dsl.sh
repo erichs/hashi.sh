@@ -62,4 +62,5 @@ hsh_usage() {
     echo "   where op is one of:"
     echo "   get   :requires key argument"
     echo "   set   :requires key and value arguments"
+    echo "   del   :requires key and/or value arguments"
 }
