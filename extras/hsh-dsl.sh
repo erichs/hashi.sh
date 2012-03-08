@@ -11,6 +11,7 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
         set)        hsh_check_arg key   || return 1
                     hsh_check_arg value || return 1
                     hsh_set $hash $key $value;;
+        del)        hsh_attempt_del $hash $key;;
         *)          hsh_usage
                     return 1;;
     esac
@@ -22,6 +23,17 @@ hsh_check_arg() { local parm=$1
         return 1
     fi
     return 0
+}
+
+hsh_attempt_del() { local hash=$1 key=${2:-}
+    local before_size=$(hsh_size $hash)
+    hsh_del $hash $key
+    local after_size=$(hsh_size $hash)
+    if [ $before_size > $after_size ]; then
+        return 0
+    else
+        return 1
+    fi
 }
 
 hsh_attempt_get() { local hash=$1 key=$2
