@@ -5,12 +5,19 @@
 
 hsh_set() { local hash=$1 key=$2 val=$3
     local fullkey=$(hsh_generate_key $hash $key)
-    eval "$fullkey='$val'"
+    eval "$fullkey='$val'" || return 1
+    return 0
 }
 
 hsh_get() { local hash=$1 key=$2
     local fullkey=$(hsh_generate_key $hash $key)
-    echo ${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset, aka set -u
+    local val=${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset, aka set -u
+    if [ -n "$val" ]; then
+        echo "$val"
+        return 0
+    else
+        return 1
+    fi
 }
 
 hsh_keys() { local hash=$1
