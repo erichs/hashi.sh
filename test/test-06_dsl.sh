@@ -45,6 +45,10 @@ main() {
     hsh del hash2 >/dev/null 2>&1
     assert [ $? == 0 ]
 
+    label 'hsh del unknown-hash' does return error
+    hsh del unknown-hash >/dev/null 2>&1
+    assert [ $? == 1 ]
+
     set -e
 
     label 'hsh get hash key' retrieves value
