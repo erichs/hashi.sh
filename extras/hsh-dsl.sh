@@ -26,5 +26,8 @@ hsh_check_arg() { local parm=$1
 
 
 hsh_usage() {
-    echo "Usage: op hsh some usage here"
+    echo "Usage: hsh op hashname [key] [value]"
+    echo "   where op is one of:"
+    echo "   get   :requires key argument"
+    echo "   set   :requires key and value arguments"
 }

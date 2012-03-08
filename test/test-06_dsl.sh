@@ -36,6 +36,10 @@ main() {
     label 'hsh get hash' is error
     assert [ $(hsh get hash | greplines "must provide key") == 1 ]
 
+    label 'hsh get hash boguskey' gives error code
+    hsh get hash boguskey >/dev/null 2>&1
+    assert [ $? == 1 ]
+
     set -e
 
     label 'hsh get hash key' retrieves value
@@ -55,9 +59,6 @@ main() {
     label 'hsh get hash boguskey' gives empty string
     assert [ $(hsh get hash boguskey) == '' ]
 
-    label 'hsh get hash boguskey' gives error code
-    hsh get hash boguskey >/dev/null 2>&1
-    assert [ $? == 1 ]
 
 }
 
