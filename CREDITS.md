@@ -10,5 +10,6 @@ Inspiration (and occasionally implementation) for some of the syntax and functio
 
 See commits:
 
-* [rm/unset](https://github.com/erichs/hashi.sh/commit/9cf9b403c9f79469fee5316ac9b0060eb7cdb6f9#commitcomment-1049996)
+* [del/unset](https://github.com/erichs/hashi.sh/commit/9cf9b403c9f79469fee5316ac9b0060eb7cdb6f9#commitcomment-1049996)
 * [each](https://github.com/erichs/hashi.sh/commit/46dc44ecb7fe123e6ebfbe4a94128c9bc19b74cf#commitcomment-1051549)
+* [hsh 'dsl'](https://github.com/erichs/hashi.sh/commit/1965370e3a44ec6e46cf0b44f63650a6ed3f57d6#commitcomment-1058299)
