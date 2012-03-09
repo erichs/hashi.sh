@@ -20,6 +20,7 @@ hsh_set() { local hash=$1 key=$2 val=$3
 }
 
 hsh_get() { local hash=$1 key=$2
+    hsh_check_args hash key
     local fullkey=$(hsh_generate_key $hash $key)
     local val=${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset, aka set -u
     if [ -n "$val" ]; then
@@ -31,6 +32,7 @@ hsh_get() { local hash=$1 key=$2
 }
 
 hsh_keys() { local hash=$1
+    hsh_check_args hash
     local prefix=$(hsh_generate_key $hash)
     local vars
     eval vars="\${!$prefix*}"
@@ -40,12 +42,14 @@ hsh_keys() { local hash=$1
 }
 
 hsh_size() { local hash=$1
+    hsh_check_args hash
     local size=0
     for key in $(hsh_keys $hash); do size=$((size + 1)); done
     echo $size
 }
 
 hsh_del() { local hash=$1 key=${2:-}
+    hsh_check_args hash
     if [ -z "$key" ]; then
         hsh_unset_hash "$hash"
     else
@@ -54,6 +58,7 @@ hsh_del() { local hash=$1 key=${2:-}
 }
 
 hsh_each() { local hash=$1 code=$2
+    hsh_check_args hash code
     for key in $(hsh_keys "$hash"); do
         value=$(hsh_get "$hash" "$key")
         eval "$code"
@@ -61,15 +66,24 @@ hsh_each() { local hash=$1 code=$2
 }
 
 hsh_values() { local hash=$1
+    hsh_check_args hash
     hsh_each $hash 'echo $value'
 }
 
 hsh_getall() { local hash=$1
+    hsh_check_args hash
     hsh_each $hash 'echo $key: $value'
 }
 
 hsh_has() { local hash=$1 key=$2
+    hsh_check_args hash key
     return $(hsh_get $hash $key >/dev/null)
+}
+
+hsh_empty() { local hash=$1
+    hsh_check_args hash
+    [ $(hsh_size $hash) != 0 ] && return 1
+    return 0
 }
 
 #### internal helper methods
@@ -77,11 +91,6 @@ hsh_has() { local hash=$1 key=$2
 hsh_generate_key() { local hash=$1 key=${2:-}
     local str="__${hash}_SNIP_${key}"
     echo ${str//-/___}  # bash doesn't allow hyphens in variable names. bummer.
-}
-
-hsh_empty() { local hash=$1
-    [ $(hsh_size $hash) != 0 ] && return 1
-    return 0
 }
 
 hsh_unset_hash() { local hash=$1
