@@ -73,20 +73,14 @@ hsh_has() { local hash=$1 key=$2
 
 #### internal helper methods
 
-hsh_escape() { local str=$1
+hsh_generate_key() { local hash=$1 key=${2:-}
+    local str="__${hash}_SNIP_${key}"
     echo ${str//-/___}  # bash doesn't allow hyphens in variable names. bummer.
 }
 
-hsh_generate_key() { local hash=$1 key=${2:-}
-    hsh_escape "__${hash}_SNIP_${key}"
-}
-
 hsh_empty() { local hash=$1
-    if [ $(hsh_size $hash) == 0 ]; then
-        return 0
-    else
-        return 1
-    fi
+    [ $(hsh_size $hash) != 0 ] && return 1
+    return 0
 }
 
 hsh_unset_hash() { local hash=$1
