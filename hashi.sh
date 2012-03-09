@@ -2,15 +2,7 @@
 # hashi.sh - ultra-simple key/value hash
 
 #### API: use these primitives in your script
-# get:    2 parameters, retrieves the value for a key
-# set:    3 parameters, sets a key/value pair
-# del:    1 or 2 parameters, deletes hash or hash key
-# has:    2 parameters, true/false: does hash contain key?
-# keys:   1 parameter, displays all hash keys
-# values: 1 parameter, displays all hash values
-# getall: 1 parameter, displays each key/value pair
-# size:   1 parameter, numeric size of all keys
-# each:   2 parameters, iterates over hash, evaluating code
+# See apidoc.md for full documentation
 
 hsh_set() { local hash=$1 key=$2 val=$3
     optional_doc <<-'end' && return 0
@@ -41,7 +33,9 @@ hsh_get() { local hash=$1 key=$2
 	```bash
 	# retrieve value of key 'favorite' from hash 'fruits'
 	$ fave=$(hsh_get fruits favorite)
-	$ echo $fave  # apple
+	$ echo $fave
+	apple
+	$
 	```
 	end
     __check_args hash key
@@ -298,4 +292,10 @@ optional_doc() {
 __methods() {
     # return list of all defined functions, beginning with 'hsh_'
     compgen -A function hsh_
+}
+
+__generate_api() {
+    __display_documentation=1
+    for method in $(__methods); do eval $method; echo ; echo ;  done > apidoc.md
+    unset __display_documentation
 }
