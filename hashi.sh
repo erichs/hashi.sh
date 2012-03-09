@@ -296,10 +296,6 @@ optional_doc() {
 }
 
 __methods() {
-    local prefix='hsh_'
-    eval local methods="\${!$prefix*}"
-    echo "m: $methods"
-    for method in $methods; do
-        echo $method
-    done
+    # return list of all defined functions, beginning with 'hsh_'
+    compgen -A function hsh_
 }
