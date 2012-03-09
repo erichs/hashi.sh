@@ -13,23 +13,37 @@
 # each:   2 parameters, iterates over hash, evaluating code
 
 hsh_set() { local hash=$1 key=$2 val=$3
-    optional_doc <<end && return 0
-### hsh_set
+    optional_doc <<-'end' && return 0
+	### hsh_set
 
-Sets a hash key/value pair
+	Sets a hash key/value pair.
 
-```bash
-# assign value 'apple' to key 'favorite' in hash 'fruits'
-$ hsh_set fruits favorite apple
-```
-end
+	Required parameters: hash, key, and value
+
+	```bash
+	# assign value 'apple' to key 'favorite' in hash 'fruits'
+	$ hsh_set fruits favorite apple
+	```
+	end
     hsh_check_args hash key val
-    local fullkey=$(hsh_generate_key $hash $key)
-    eval "$fullkey='$val'" || return 1
+    eval "$(hsh_generate_key $hash $key)='$val'" || return 1
     return 0
 }
 
 hsh_get() { local hash=$1 key=$2
+    optional_doc <<-'end' && return 0
+	### hsh_get
+
+	Gets a hash value for a given key.
+
+	Required parameters: hash and key
+
+	```bash
+	# retrieve value of key 'favorite' from hash 'fruits'
+	$ fave=$(hsh_get fruits favorite)
+	$ echo $fave  # apple
+	```
+	end
     hsh_check_args hash key
     local fullkey=$(hsh_generate_key $hash $key)
     local val=${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset, aka set -u
@@ -42,6 +56,23 @@ hsh_get() { local hash=$1 key=$2
 }
 
 hsh_keys() { local hash=$1
+    optional_doc <<-'end' && return 0
+	### hsh_keys
+
+	Displays all keys for a given hash, sorted, one per line.
+
+	Required parameters: hash
+
+	```bash
+	# assume hash 'fruits' contains:
+	# 'favorite' => 'apple', 'most_colorful' => 'orange', 'least_favorite' => 'kiwi'
+	$ hsh_keys fruits
+	favorite
+	least_favorite
+	most_colorful
+	$
+	```
+	end
     hsh_check_args hash
     local prefix=$(hsh_generate_key $hash)
     local vars
@@ -52,6 +83,21 @@ hsh_keys() { local hash=$1
 }
 
 hsh_size() { local hash=$1
+    optional_doc <<-'end' && return 0
+	### hsh_size
+
+	Displays number of key/value pairs in hash.
+
+	Required parameters: hash
+
+	```bash
+	# assume hash 'cars' contains:
+	# fastest => 'Bugatti Veyron', slowest => 'Smart Coupe'
+	$ hsh_size cars
+	2
+	$
+	```
+	end
     hsh_check_args hash
     local size=0
     for key in $(hsh_keys $hash); do size=$((size + 1)); done
@@ -59,6 +105,22 @@ hsh_size() { local hash=$1
 }
 
 hsh_del() { local hash=$1 key=${2:-}
+    optional_doc <<-'end' && return 0
+	### hsh_del
+
+	Deletes a key from a hash.
+
+	Required parameters: hash key
+
+	```bash
+	# assume hash 'cars' contains:
+	# fastest => 'Bugatti Veyron', slowest => 'Smart Coupe'
+	$ hsh_del cars slowest
+	$ hsh_keys cars
+	fastest
+	$
+	```
+	end
     hsh_check_args hash
     if [ -z "$key" ]; then
         hsh_unset_hash "$hash"
@@ -68,6 +130,27 @@ hsh_del() { local hash=$1 key=${2:-}
 }
 
 hsh_each() { local hash=$1 code=$2
+    optional_doc <<-'end' && return 0
+	### hsh_each
+
+	Iterates over key/value pairs in hash, evaluating code.
+	At each iteration, hsh_each sets the variables 'key' and 'value',
+	which may be referenced in your code as '$key' and '$value'.
+
+	For clarity and ease-of-use, it may be necessary to put your code
+	into a separate function that is called at each iteration.
+
+	Required parameters: hash, and code (evaluated string or function name)
+
+	```bash
+	# assume hash 'books' contains:
+	# longest => 'War and Peace', latest => 'Drive'
+	$ hsh_each books 'echo The $key book I have read is $value.'
+	The latest book I have read is Drive.
+	The longest book I have read is War and Peace.
+	$
+	```
+	end
     hsh_check_args hash code
     for key in $(hsh_keys "$hash"); do
         value=$(hsh_get "$hash" "$key")
@@ -76,21 +159,92 @@ hsh_each() { local hash=$1 code=$2
 }
 
 hsh_values() { local hash=$1
+    optional_doc <<-'end' && return 0
+	### hsh_values
+
+	Displays all values stored in hash.
+
+	Required parameters: hash
+
+	```bash
+	# assume hash 'books' contains:
+	# longest => 'War and Peace', latest => 'Drive'
+	$ hsh_values books
+	Drive
+	War and Peace
+	$
+	```
+	end
     hsh_check_args hash
     hsh_each $hash 'echo $value'
 }
 
 hsh_getall() { local hash=$1
+    optional_doc <<-'end' && return 0
+	### hsh_getall
+
+	Displays each key/value pair in hash.
+
+	Required parameters: hash
+
+	```bash
+	# assume hash 'cars' contains:
+	# fastest => 'Bugatti Veyron', slowest => 'Smart Coupe'
+	$ hsh_getall cars
+	fastest: Bugatti Veyron
+	slowest: Smart Coupe
+	$
+	```
+	end
     hsh_check_args hash
     hsh_each $hash 'echo $key: $value'
 }
 
 hsh_has() { local hash=$1 key=$2
+    optional_doc <<-'end' && return 0
+	### hsh_has
+
+	does hash contain key?
+
+	returns 0 (success) if hash contains key.
+
+	returns 1 (failure) if hash does not.
+
+	```bash
+	# assume hash 'shells' contains:
+	# 1 => ksh, 2 => zsh, 3 => bash, 4 = > sh
+	$ if hsh_has shells csh; then echo 'csh is supported'; else echo 'csh is unsupported'; fi
+	csh is unsupported
+	$
+	```
+	end
     hsh_check_args hash key
     return $(hsh_get $hash $key >/dev/null)
 }
 
 hsh_empty() { local hash=$1
+    optional_doc <<-'end' && return 0
+	### hsh_empty
+
+	is hash empty of all key/value pairs?
+
+	returns 0 (success) if hash is empty.
+
+	returns 1 (failure) if hash is not.
+
+	```bash
+	# assume hash 'foo' contains:
+	# one => 1
+	$ hsh_del foo one
+	$ if hsh_empty foo; then echo 'hash foo is empty'; fi
+	hash foo is empty
+
+	# also, for an uninitialized hash:
+	$ if hsh_empty bar; then echo 'hash bar is empty'; fi
+	hash bar is empty
+	$
+	```
+	end
     hsh_check_args hash
     [ $(hsh_size $hash) != 0 ] && return 1
     return 0
@@ -133,10 +287,10 @@ hsh_check_args() {
 }
 
 optional_doc() {
-    if [ -n "${__display_documentation}" ]; then
+    if [ "${__display_documentation:-}" == 1 ]; then
         cat -
-        return 1
-    else
         return 0
+    else
+        return 1
     fi
 }
