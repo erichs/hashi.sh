@@ -81,11 +81,22 @@ hsh_generate_key() { local hash=$1 key=${2:-}
     hsh_escape "__${hash}_SNIP_${key}"
 }
 
+hsh_empty() { local hash=$1
+    if [ $(hsh_size $hash) == 0 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 hsh_unset_hash() { local hash=$1
+    $(hsh_empty $hash)  && return 1    # unsetting empty hash is error
+
     for key in $(hsh_keys $hash); do
         hsh_unset_key $hash $key
     done
-    [ $(hsh_size $hash) -gt 0 ] && return 1
+
+    ! $(hsh_empty $hash) && return 1
     return 0
 }
 
