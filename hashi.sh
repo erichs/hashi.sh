@@ -13,6 +13,7 @@
 # each:   2 parameters, iterates over hash, evaluating code
 
 hsh_set() { local hash=$1 key=$2 val=$3
+    hsh_check_args hash key val
     local fullkey=$(hsh_generate_key $hash $key)
     eval "$fullkey='$val'" || return 1
     return 0
@@ -101,3 +102,13 @@ hsh_unset_key() { local hash=$1 key=$2
     return 0
 }
 
+hsh_check_args() {
+    until [ -z "${1:-}" ]; do
+        if [ -z "${!1}" ]; then
+            echo "must provide $1 with this operation!"
+            return 1
+        fi
+        shift
+    done
+    return 0
+}

@@ -6,10 +6,9 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
         return 1
     fi
     case $op in
-        get)        hsh_check_arg key   || return 1
+        get)        hsh_check_args key   || return 1
                     hsh_get $hash $key;;
-        set)        hsh_check_arg key   || return 1
-                    hsh_check_arg value || return 1
+        set)        hsh_check_args key value  || return 1
                     hsh_set $hash $key $value;;
         del)        hsh_del $hash $key;;
         keys)       hsh_keys $hash;;
@@ -17,14 +16,6 @@ hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
         *)          hsh_usage
                     return 1;;
     esac
-}
-
-hsh_check_arg() { local parm=$1
-    if [ -z "${!parm}" ]; then
-        echo "must provide $parm with this operation!"
-        return 1
-    fi
-    return 0
 }
 
 hsh_attempt_del() { local hash=$1 key=${2:-}
