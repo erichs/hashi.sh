@@ -36,6 +36,13 @@ Sure:
 
     $ echo "FQDN: $(hsh_get machine1 fqdn)"
 ```
+
+## Show me more
+
+Well, ok.
+
+[hashi.sh API doc](https://github.com/erichs/hashi.sh/blob/master/apidoc.md)
+
 This software is released into the public domain.  Please use it responsibly.
 
 Enjoy.
