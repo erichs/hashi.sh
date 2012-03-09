@@ -13,6 +13,16 @@
 # each:   2 parameters, iterates over hash, evaluating code
 
 hsh_set() { local hash=$1 key=$2 val=$3
+    optional_doc <<end && return 0
+### hsh_set
+
+Sets a hash key/value pair
+
+```bash
+# assign value 'apple' to key 'favorite' in hash 'fruits'
+$ hsh_set fruits favorite apple
+```
+end
     hsh_check_args hash key val
     local fullkey=$(hsh_generate_key $hash $key)
     eval "$fullkey='$val'" || return 1
@@ -120,4 +130,13 @@ hsh_check_args() {
         shift
     done
     return 0
+}
+
+optional_doc() {
+    if [ -n "${__display_documentation}" ]; then
+        cat -
+        return 1
+    else
+        return 0
+    fi
 }
