@@ -54,6 +54,15 @@ main() {
     local key='key with spaces'
     local testval=$(hsh_get hash "$key")
     assert [ "$testval" == value ]
+
+    label sets hash with spaces
+    assert hsh_set '"hash with spaces"' key val
+
+    label gets hash with spaces
+    local hwsp='hash with spaces'
+    testval=$(hsh_get "$hwsp" key)
+    assert [ "$testval" == val ]
+
 }
 
 main
