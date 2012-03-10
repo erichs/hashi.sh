@@ -34,9 +34,10 @@ main() {
     hsh_clear hash
     assert [ $(hsh_size hash) == 0 ]
 
-    label del hash with spaces
+    label del hash with spaces key removes key
     hsh_set "hash with spaces" key val
-    assert hsh_del '"hash with spaces"'
+    hsh_del "hash with spaces" key
+    assert [ $(hsh_size '"hash with spaces"') == 0 ]
 }
 
 main
