@@ -85,7 +85,7 @@ hsh_keys() { local hash=${1:-}
 	```
 	end
     __check_args hash
-    local prefix=$(__generate_key $hash)
+    local prefix=$(__generate_key "$hash")
     local vars
     eval vars="\${!$prefix*}"
     for var in $vars; do
