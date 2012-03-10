@@ -50,6 +50,9 @@ main() {
     hsh_set tst2-h key1 val1
     assert [ $(hsh_size tst2) == $(hsh_size tst2-h) ]
 
+    label get hash size with spaces
+    local swsp=$(hsh_size "hash with spaces")
+    assert [ $swsp == 1 ]
 }
 
 main
