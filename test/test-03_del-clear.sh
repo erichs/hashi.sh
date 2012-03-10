@@ -30,9 +30,14 @@ main() {
     label keys does not display removed key
     assert [ -z '"$(hsh_keys hash | grep key2)"' ]
 
-    label del removes hash
-    hsh_del hash
+    label clear removes hash
+    hsh_clear hash
     assert [ $(hsh_size hash) == 0 ]
+
+    label del hash with spaces key removes key
+    hsh_set "hash with spaces" key val
+    hsh_del "hash with spaces" key
+    assert [ $(hsh_size '"hash with spaces"') == 0 ]
 }
 
 main

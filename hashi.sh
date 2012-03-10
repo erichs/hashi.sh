@@ -33,8 +33,9 @@ hsh_set() { local hash=${1:-} key=${2:-} value=${3:-}
 	$ hsh set fruits favorite apple
 	```
 	end
-    __check_args hash key value
-    eval "$(__generate_key $hash $key)='$value'" || return 1
+    __check_args hash key value || return 1
+	local fullkey=$(__generate_key "$hash" "$key")
+    eval "$fullkey='$value'" || return 1
     return 0
 }
 
@@ -54,8 +55,8 @@ hsh_get() { local hash=${1:-} key=${2:-}
 	$
 	```
 	end
-    __check_args hash key
-    local fullkey=$(__generate_key $hash $key)
+    __check_args hash key || return 1
+    local fullkey=$(__generate_key "$hash" "$key")
     local val=${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset, aka set -u
     if [ -n "$val" ]; then
         echo "$val"
@@ -83,8 +84,8 @@ hsh_keys() { local hash=${1:-}
 	$
 	```
 	end
-    __check_args hash
-    local prefix=$(__generate_key $hash)
+    __check_args hash || return 1
+    local prefix=$(__generate_key "$hash")
     local vars
     eval vars="\${!$prefix*}"
     for var in $vars; do
@@ -108,10 +109,31 @@ hsh_size() { local hash=${1:-}
 	$
 	```
 	end
-    __check_args hash
+    __check_args hash || return 1
     local size=0
-    for key in $(hsh_keys $hash); do size=$((size + 1)); done
+    for key in $(hsh_keys "$hash"); do size=$((size + 1)); done
     echo $size
+}
+
+hsh_clear() { local hash=${1:-}
+    optional_doc <<-'end' && return 0
+	### clear
+
+	Deletes a hash.
+
+	Required parameters: hash
+
+	```bash
+	# assume hash 'cars' contains:
+	# fastest => 'Bugatti Veyron', slowest => 'Smart Coupe'
+	$ hsh del cars
+	$ hsh size cars
+	0
+	$
+	```
+	end
+    __check_args hash || return 1
+    __unset_hash "$hash"
 }
 
 hsh_del() { local hash=${1:-} key=${2:-}
@@ -131,12 +153,8 @@ hsh_del() { local hash=${1:-} key=${2:-}
 	$
 	```
 	end
-    __check_args hash
-    if [ -z "$key" ]; then
-        __unset_hash "$hash"
-    else
-        __unset_key "$hash" "$key"
-    fi
+    __check_args hash key || return 1
+    __unset_key "$hash" "$key"
 }
 
 hsh_each() { local hash=${1:-} code=${2:-}
@@ -161,7 +179,7 @@ hsh_each() { local hash=${1:-} code=${2:-}
 	$
 	```
 	end
-    __check_args hash code
+    __check_args hash code || return 1
     for key in $(hsh_keys "$hash"); do
         value=$(hsh_get "$hash" "$key")
         eval "$code"
@@ -185,7 +203,7 @@ hsh_values() { local hash=${1:-}
 	$
 	```
 	end
-    __check_args hash
+    __check_args hash || return 1
     hsh_each $hash 'echo $value'
 }
 
@@ -206,7 +224,7 @@ hsh_getall() { local hash=${1:-}
 	$
 	```
 	end
-    __check_args hash
+    __check_args hash || return 1
     hsh_each $hash 'echo $key: $value'
 }
 
@@ -228,7 +246,7 @@ hsh_has() { local hash=${1:-} key=${2:-}
 	$
 	```
 	end
-    __check_args hash key
+    __check_args hash key || return 1
     return $(hsh_get $hash $key >/dev/null)
 }
 
@@ -255,7 +273,7 @@ hsh_empty() { local hash=${1:-}
 	$
 	```
 	end
-    __check_args hash
+    __check_args hash || return 1
     [ $(hsh_size $hash) != 0 ] && return 1
     return 0
 }
@@ -277,42 +295,43 @@ hsh_declare() { local hash=$1
 	$
 	```
 	end
-    __check_args hash
-    echo "hash is: $hash"
+    __check_args hash || return 1
     eval "$hash() { op=\$1; shift; hsh \$op $hash \$*; }"
 }
 #### internal helper methods
 
 __generate_key() { local hash=${1:-} key=${2:-}
-    local str="__${hash}_SNIP_${key}"
-    echo ${str//-/___}  # bash doesn't allow hyphens in variable names. bummer.
+    local str="__${hash}_qXzJj_${key}"  # separate hashes and keys with unlikely yet searchable string.
+    local esc=${str//-/___}				# bash doesn't allow hyphens in variable names. bummer.
+	echo ${esc// /JxXzQ}				# also, escape spaces with a statistically unlikely string.
 }
 
 __unset_hash() { local hash=${1:-}
-    $(hsh_empty $hash)  && return 1    # unsetting empty hash is error
+    $(hsh_empty "$hash")  && return 1    # unsetting empty hash is error
 
-    for key in $(hsh_keys $hash); do
-        __unset_key $hash $key
+    for key in $(hsh_keys "$hash"); do
+        __unset_key "$hash" "$key"
     done
 
-    ! $(hsh_empty $hash) && return 1
+    ! $(hsh_empty "$hash") && return 1
     return 0
 }
 
 __unset_key() { local hash=${1:-} key=${2:-}
-    local fullkey=$(__generate_key $hash $key)
+    local fullkey=$(__generate_key "$hash" "$key")
     unset -v $fullkey
-    hsh_has $hash $key && return 1
+    hsh_has "$hash" "$key" && return 1
     return 0
 }
 
-__check_args() {
-    until [ -z "${1:-}" ]; do
-        if [ -z "${!1}" ]; then
-            echo "must provide $1 with this operation!"
+__check_args() { local arg=${1:-}
+    until [ -z "${arg:-}" ]; do
+        if [ -z "${!arg}" ]; then
+            echo "must provide $arg with this operation!"
             return 1
         fi
         shift
+		arg=${1:-}
     done
     return 0
 }
