@@ -35,7 +35,7 @@ Sure:
     $ hsh set machine1 user billybob
 
     $ echo "FQDN: $(hsh get machine1 fqdn)"
-    machine1.somewhere.net
+    FQDN: machine1.somewhere.net
     $
     
     # or, equivalently:
@@ -44,8 +44,8 @@ Sure:
     $ machine1 set hw "Dell Poweredge 1950"
     $ machine1 set user billybob
     
-    $ echo "FWDN: $(machine1 get fqdn)"
-    machine1.somewhere.net
+    $ echo "FQDN: $(machine1 get fqdn)"
+    FQDN: machine1.somewhere.net
     $
 ```
 
