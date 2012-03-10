@@ -33,6 +33,10 @@ main() {
     label del removes hash
     hsh_del hash
     assert [ $(hsh_size hash) == 0 ]
+
+    label del hash with spaces
+    hsh_set "hash with spaces" key val
+    assert hsh_del '"hash with spaces"'
 }
 
 main
