@@ -291,20 +291,20 @@ __generate_key() { local hash=${1:-} key=${2:-}
 }
 
 __unset_hash() { local hash=${1:-}
-    $(hsh_empty $hash)  && return 1    # unsetting empty hash is error
+    $(hsh_empty "$hash")  && return 1    # unsetting empty hash is error
 
-    for key in $(hsh_keys $hash); do
-        __unset_key $hash $key
+    for key in $(hsh_keys "$hash"); do
+        __unset_key "$hash" "$key"
     done
 
-    ! $(hsh_empty $hash) && return 1
+    ! $(hsh_empty "$hash") && return 1
     return 0
 }
 
 __unset_key() { local hash=${1:-} key=${2:-}
-    local fullkey=$(__generate_key $hash $key)
+    local fullkey=$(__generate_key "$hash" "$key")
     unset -v $fullkey
-    hsh_has $hash $key && return 1
+    hsh_has "$hash" "$key" && return 1
     return 0
 }
 
