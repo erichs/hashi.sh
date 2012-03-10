@@ -44,6 +44,16 @@ main() {
     label fails to retrieve unknown key
     assert [ '"$(hsh_get hash unknown key)"' == '""' ]
 
+    label sets key with spaces
+    assert hsh_set hash '"key with spaces"' value
+
+    label sets other key with spaces
+    assert hsh_set hash '"key with other spaces"' other_value
+
+    label gets key with spaces
+    local key='key with spaces'
+    local testval=$(hsh_get hash "$key")
+    assert [ "$testval" == value ]
 }
 
 main
