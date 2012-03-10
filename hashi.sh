@@ -34,7 +34,8 @@ hsh_set() { local hash=${1:-} key=${2:-} value=${3:-}
 	```
 	end
     __check_args hash key value
-    eval "$(__generate_key $hash $key)='$value'" || return 1
+	local fullkey=$(__generate_key "$hash" "$key")
+    eval "$fullkey='$value'" || return 1
     return 0
 }
 
@@ -55,7 +56,7 @@ hsh_get() { local hash=${1:-} key=${2:-}
 	```
 	end
     __check_args hash key
-    local fullkey=$(__generate_key $hash $key)
+    local fullkey=$(__generate_key "$hash" "$key")
     local val=${!fullkey:-}  # the {foo:-} idiom is safe to use with set -o nounset, aka set -u
     if [ -n "$val" ]; then
         echo "$val"
@@ -284,8 +285,9 @@ hsh_declare() { local hash=$1
 #### internal helper methods
 
 __generate_key() { local hash=${1:-} key=${2:-}
-    local str="__${hash}_SNIP_${key}"
-    echo ${str//-/___}  # bash doesn't allow hyphens in variable names. bummer.
+    local str="__${hash}_qXzJj_${key}"  # separate hashes and keys with unlikely yet searchable string.
+    local esc=${str//-/___}				# bash doesn't allow hyphens in variable names. bummer.
+	echo ${esc// /JxXzQ}				# also, escape spaces with a statistically unlikely string.
 }
 
 __unset_hash() { local hash=${1:-}
