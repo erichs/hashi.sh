@@ -30,11 +30,13 @@ Sure:
 
 ```bash
     $ source hashi.sh
-    $ hsh_set machine1 fqdn machine1.somewhere.net
-    $ hsh_set machine1 hw "Dell Poweredge 1950"
-    $ hsh_set machine1 user billybob
+    $ hsh set machine1 fqdn machine1.somewhere.net
+    $ hsh set machine1 hw "Dell Poweredge 1950"
+    $ hsh set machine1 user billybob
 
-    $ echo "FQDN: $(hsh_get machine1 fqdn)"
+    $ echo "FQDN: $(hsh get machine1 fqdn)"
+    machine1.somewhere.net
+    $
 ```
 
 ## Show me more
