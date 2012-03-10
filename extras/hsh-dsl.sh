@@ -1,28 +1,25 @@
 #!/bin/bash
 
-hsh() { local op=${1:-} hash=${2:-} key=${3:-} value=${4:-}
-    if [ -z "$hash" ]; then
+hsh() { local op=${1:-}
+    if [ -z "$op" ]; then
         __usage
         return 1
     fi
-    case $op in
-        get)        __check_args key   || return 1
-                    hsh_get $hash $key;;
-        set)        __check_args key value  || return 1
-                    hsh_set $hash $key $value;;
-        del)        hsh_del $hash $key;;
-        keys)       hsh_keys $hash;;
-        size)       hsh_size $hash;;
-        *)          __usage
-                    return 1;;
-    esac
+    for method in $(__methods); do
+        if [ "hsh_$op" == $method ]; then
+            $($method)
+            return $?
+        fi
+    done
+    __usage
+    return 1
 }
 
 __usage() {
     echo "Usage: hsh op hashname [key] [value]"
     echo "   where op is one of:"
-    echo "   get   :requires key argument"
-    echo "   set   :requires key and value arguments"
-    echo "   del   :requires key and/or value arguments"
-    echo "   keys"
+    local prefix="hsh_"
+    for method in $(__methods); do
+        echo "   ${method#$prefix}"  # auto-generate op list
+    done
 }
