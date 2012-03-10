@@ -1,3 +1,19 @@
+### clear
+
+Deletes a hash.
+
+Required parameters: hash
+
+```bash
+# assume hash 'cars' contains:
+# fastest => 'Bugatti Veyron', slowest => 'Smart Coupe'
+$ hsh del cars
+$ hsh size cars
+0
+$
+```
+
+
 ### declare
 
 Declare a wrapper function around 'hsh()'. This allows you to eliminate one argument
