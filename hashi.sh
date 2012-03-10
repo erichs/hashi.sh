@@ -111,7 +111,7 @@ hsh_size() { local hash=${1:-}
 	end
     __check_args hash
     local size=0
-    for key in $(hsh_keys $hash); do size=$((size + 1)); done
+    for key in $(hsh_keys "$hash"); do size=$((size + 1)); done
     echo $size
 }
 
