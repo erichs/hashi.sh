@@ -4,7 +4,7 @@
 #### API: use these primitives in your script
 # See apidoc.md for full documentation
 
-hsh_set() { local hash=$1 key=$2 val=$3
+hsh_set() { local hash=${1:-} key=${2:-} val=${3:-}
     optional_doc <<-'end' && return 0
 	### hsh_set
 
@@ -22,7 +22,7 @@ hsh_set() { local hash=$1 key=$2 val=$3
     return 0
 }
 
-hsh_get() { local hash=$1 key=$2
+hsh_get() { local hash=${1:-} key=${2:-}
     optional_doc <<-'end' && return 0
 	### hsh_get
 
@@ -49,7 +49,7 @@ hsh_get() { local hash=$1 key=$2
     fi
 }
 
-hsh_keys() { local hash=$1
+hsh_keys() { local hash=${1:-}
     optional_doc <<-'end' && return 0
 	### hsh_keys
 
@@ -76,7 +76,7 @@ hsh_keys() { local hash=$1
     done
 }
 
-hsh_size() { local hash=$1
+hsh_size() { local hash=${1:-}
     optional_doc <<-'end' && return 0
 	### hsh_size
 
@@ -98,7 +98,7 @@ hsh_size() { local hash=$1
     echo $size
 }
 
-hsh_del() { local hash=$1 key=${2:-}
+hsh_del() { local hash=${1:-} key=${2:-}
     optional_doc <<-'end' && return 0
 	### hsh_del
 
@@ -123,7 +123,7 @@ hsh_del() { local hash=$1 key=${2:-}
     fi
 }
 
-hsh_each() { local hash=$1 code=$2
+hsh_each() { local hash=${1:-} code=${2:-}
     optional_doc <<-'end' && return 0
 	### hsh_each
 
@@ -152,7 +152,7 @@ hsh_each() { local hash=$1 code=$2
     done
 }
 
-hsh_values() { local hash=$1
+hsh_values() { local hash=${1:-}
     optional_doc <<-'end' && return 0
 	### hsh_values
 
@@ -173,7 +173,7 @@ hsh_values() { local hash=$1
     hsh_each $hash 'echo $value'
 }
 
-hsh_getall() { local hash=$1
+hsh_getall() { local hash=${1:-}
     optional_doc <<-'end' && return 0
 	### hsh_getall
 
@@ -194,7 +194,7 @@ hsh_getall() { local hash=$1
     hsh_each $hash 'echo $key: $value'
 }
 
-hsh_has() { local hash=$1 key=$2
+hsh_has() { local hash=${1:-} key=${2:-}
     optional_doc <<-'end' && return 0
 	### hsh_has
 
@@ -216,7 +216,7 @@ hsh_has() { local hash=$1 key=$2
     return $(hsh_get $hash $key >/dev/null)
 }
 
-hsh_empty() { local hash=$1
+hsh_empty() { local hash=${1:-}
     optional_doc <<-'end' && return 0
 	### hsh_empty
 
@@ -246,12 +246,12 @@ hsh_empty() { local hash=$1
 
 #### internal helper methods
 
-__generate_key() { local hash=$1 key=${2:-}
+__generate_key() { local hash=${1:-} key=${2:-}
     local str="__${hash}_SNIP_${key}"
     echo ${str//-/___}  # bash doesn't allow hyphens in variable names. bummer.
 }
 
-__unset_hash() { local hash=$1
+__unset_hash() { local hash=${1:-}
     $(hsh_empty $hash)  && return 1    # unsetting empty hash is error
 
     for key in $(hsh_keys $hash); do
@@ -262,7 +262,7 @@ __unset_hash() { local hash=$1
     return 0
 }
 
-__unset_key() { local hash=$1 key=$2
+__unset_key() { local hash=${1:-} key=${2:-}
     local fullkey=$(__generate_key $hash $key)
     unset -v $fullkey
     hsh_has $hash $key && return 1
