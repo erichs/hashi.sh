@@ -29,6 +29,11 @@ main() {
     label valid keys content
     assert [ $(hsh_keys hash | grep key2) == key2 ]
 
+    label get hash keys with spaces
+    hsh_set "hash with spaces" key val
+    local kwsp=$(hsh_keys "hash with spaces")
+    assert [ ! -z '"$kwsp"' ]
+
     label get hash size
     assert [ $(hsh_size hash) == 3 ]
 
