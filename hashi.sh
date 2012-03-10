@@ -4,7 +4,7 @@
 #### API: use these primitives in your script
 # See apidoc.md for full documentation
 
-hsh_set() { local hash=${1:-} key=${2:-} val=${3:-}
+hsh_set() { local hash=${1:-} key=${2:-} value=${3:-}
     optional_doc <<-'end' && return 0
 	### hsh_set
 
@@ -17,8 +17,8 @@ hsh_set() { local hash=${1:-} key=${2:-} val=${3:-}
 	$ hsh_set fruits favorite apple
 	```
 	end
-    __check_args hash key val
-    eval "$(__generate_key $hash $key)='$val'" || return 1
+    __check_args hash key value
+    eval "$(__generate_key $hash $key)='$value'" || return 1
     return 0
 }
 
