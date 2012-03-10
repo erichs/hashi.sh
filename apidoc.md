@@ -1,3 +1,19 @@
+### hsh_declare
+
+Declare a wrapper function around 'hsh()'. This allows you to eliminate one argument
+from all subsequent api calls for that hash.
+
+Required parameters: hash
+
+```bash
+$ hsh_declare dogs
+$ dogs set breed Collie
+$ dogs get breed
+Collie
+$
+```
+
+
 ### hsh_del
 
 Deletes a key from a hash.
@@ -66,7 +82,9 @@ Required parameters: hash and key
 ```bash
 # retrieve value of key 'favorite' from hash 'fruits'
 $ fave=$(hsh_get fruits favorite)
-$ echo $fave  # apple
+$ echo $fave
+apple
+$
 ```
 
 
