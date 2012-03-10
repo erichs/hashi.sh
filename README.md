@@ -42,7 +42,7 @@ Sure:
     $ hsh declare machine1
     $ machine1 set fqdn machine1.somewhere.net
     $ machine1 set hw "Dell Poweredge 1950"
-    $ machien1 set user billybob
+    $ machine1 set user billybob
     
     $ echo "FWDN: $(machine1 get fqdn)"
     machine1.somewhere.net
