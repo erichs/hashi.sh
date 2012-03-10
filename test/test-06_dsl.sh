@@ -33,17 +33,11 @@ main() {
     label hsh with unknown op gives usage
     assert [ $(hsh unknown_op hash | greplines "Usage") == 1 ]
 
-    label usage contains get op
-    assert [ $(hsh unknown_op hash | greplines "get") == 1 ]
-
-    label usage contains set op
-    assert [ $(hsh unknown_op hash | greplines "set") == 1 ]
-
-    label usage contains del op
-    assert [ $(hsh unknown_op hash | greplines "del") == 1 ]
-
-    label usage contains keys op
-    assert [ $(hsh unknown_op hash | greplines "keys") == 1 ]
+    for method in $(__methods); do
+        op=${method#hsh_}
+        label usage contains $op
+        assert [ $(hsh | greplines "$op") -ge 1 ]
+    done
 
     label 'hsh get hash' is error
     assert [ $(hsh get hash | greplines "must provide key") == 1 ]
