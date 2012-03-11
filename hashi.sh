@@ -9,7 +9,7 @@ hsh() { local op=${1:-}
         __usage
         return 1
     fi
-    for method in $(__methods); do
+    for method in $(__hsh_dsl_methods); do
         if [ "hsh_$op" == $method ]; then
             shift
             $method $*
@@ -280,7 +280,7 @@ hsh_empty() { local hash=${1:-}
 
 hsh_declare() { local hash=$1
     optional_doc <<-'end' && return 0
-	### declare
+	### hsh_declare
 
 	Declare a wrapper function around 'hsh()'. This allows you to eliminate one argument
 	from all subsequent api calls for that hash.
@@ -288,7 +288,7 @@ hsh_declare() { local hash=$1
 	Required parameters: hash
 
 	```bash
-	$ hsh declare dogs
+	$ hsh_declare dogs
 	$ dogs set breed Collie
 	$ dogs get breed
 	Collie
@@ -298,6 +298,7 @@ hsh_declare() { local hash=$1
     __check_args hash || return 1
     eval "$hash() { op=\$1; shift; hsh \$op $hash \$*; }"
 }
+
 #### internal helper methods
 
 __generate_key() { local hash=${1:-} key=${2:-}
@@ -345,14 +346,29 @@ optional_doc() {
     fi
 }
 
-__methods() {
+__all_hsh_methods() {
     # return list of all defined functions, beginning with 'hsh_'
     compgen -A function hsh_
 }
 
+__not_for_dsl_methods() {
+	echo 'hsh_declare'
+}
+
+__hsh_dsl_methods() {
+	local method excluded
+    for method in $(__all_hsh_methods); do
+		for excluded in $(__not_for_dsl_methods); do
+			if [ $method != $excluded ]; then
+				echo $method
+			fi
+		done
+    done
+}
+
 __generate_api() {
     __display_documentation=1
-    for method in $(__methods); do eval $method; echo ; echo ;  done > apidoc.md
+    for method in $(__all_hsh_methods); do eval $method; echo ; echo ;  done > apidoc.md
     unset __display_documentation
 }
 
@@ -360,8 +376,8 @@ __usage() {
     echo "Usage: $(__outermost_function) op hashname [key] [value]"
     echo "   where op is one of:"
     local prefix="hsh_"
-    for method in $(__methods); do
-        echo "   ${method#$prefix}"  # auto-generate op list
+    for method in $(__hsh_dsl_methods); do
+				echo "   ${method#$prefix}"  # auto-generate op list
     done
 }
 
