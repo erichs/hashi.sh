@@ -299,10 +299,22 @@ hsh_declare() { local hash=$1
     eval "$hash() { op=\$1; shift; hsh \$op $hash \$*; }"
 }
 
-#### internal helper methods
+hsh_list() {
+	local key allkeys prefix="__${_delim}_"
+    allkeys=$(eval "echo \${!$prefix*}")
+	for key in $allkeys; do
+		eval "trim=\${key%_${_delim}_*}"
+		eval "fat=\${trim#*${_delim}_}"
+		echo $fat
+	done | sort -u
+}
+
+#### internal helper methods & vars
+
+_delim=qXzJj
 
 __generate_key() { local hash=${1:-} key=${2:-}
-    local str="__${hash}_qXzJj_${key}"  # separate hashes and keys with unlikely yet searchable string.
+    local str="__${_delim}_${hash}_${_delim}_${key}"  # separate hashes and keys with unlikely yet searchable string.
     local esc=${str//-/___}				# bash doesn't allow hyphens in variable names. bummer.
 	echo ${esc// /JxXzQ}				# also, escape spaces with a statistically unlikely string.
 }
@@ -353,17 +365,28 @@ __all_hsh_methods() {
 
 __not_for_dsl_methods() {
 	echo 'hsh_declare'
+	echo 'hsh_list'
 }
 
 __hsh_dsl_methods() {
 	local method excluded
-    for method in $(__all_hsh_methods); do
-		for excluded in $(__not_for_dsl_methods); do
-			if [ $method != $excluded ]; then
+    (   # define helper function with 'private' scope
+		is_excluded() { local method=$1
+			local excluded
+    	    for excluded in $(__not_for_dsl_methods); do
+				if [ $method == $excluded ]; then
+					return 0
+				fi
+			done
+			return 1
+		}
+
+    	for method in $(__all_hsh_methods); do
+			if ! is_excluded $method; then
 				echo $method
 			fi
-		done
-    done
+    	done
+    )
 }
 
 __generate_api() {
@@ -377,7 +400,7 @@ __usage() {
     echo "   where op is one of:"
     local prefix="hsh_"
     for method in $(__hsh_dsl_methods); do
-				echo "   ${method#$prefix}"  # auto-generate op list
+		echo "   ${method#$prefix}"  # auto-generate op list
     done
 }
 
