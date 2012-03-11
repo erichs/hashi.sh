@@ -31,7 +31,7 @@ main() {
     label hsh with unknown op gives usage
     assert [ $(hsh unknown_op hash | greplines "Usage") == 1 ]
 
-    for method in $(__methods); do
+    for method in $(__hsh_dsl_methods); do
         op=${method#hsh_}
         label usage contains $op
         assert [ $(hsh | greplines "$op") -ge 1 ]
