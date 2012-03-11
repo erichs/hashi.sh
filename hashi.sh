@@ -300,13 +300,29 @@ hsh_declare() { local hash=$1
 }
 
 hsh_list() {
-	local key allkeys prefix="__${_delim}_"
+    optional_doc <<-'end' && return 0
+	### hsh_list
+
+	Display a sorted list of all hashes defined using hashi.sh
+
+	Required parameters: none
+
+	```bash
+	$ hsh set dogs breed Collie
+	$ hsh set cats breed Siamese
+	$ hsh_list
+	cats
+	dogs
+	$
+	```
+	end
+    local key allkeys prefix="__${_delim}_"
     allkeys=$(eval "echo \${!$prefix*}")
-	for key in $allkeys; do
-		eval "trim=\${key%_${_delim}_*}"
-		eval "fat=\${trim#*${_delim}_}"
-		echo $fat
-	done | sort -u
+    for key in $allkeys; do
+        eval "trim=\${key%_${_delim}_*}"
+        eval "fat=\${trim#*${_delim}_}"
+        echo $fat
+    done | sort -u
 }
 
 #### internal helper methods & vars

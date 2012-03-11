@@ -14,7 +14,7 @@ $
 ```
 
 
-### declare
+### hsh_declare
 
 Declare a wrapper function around 'hsh()'. This allows you to eliminate one argument
 from all subsequent api calls for that hash.
@@ -22,7 +22,7 @@ from all subsequent api calls for that hash.
 Required parameters: hash
 
 ```bash
-$ hsh declare dogs
+$ hsh_declare dogs
 $ dogs set breed Collie
 $ dogs get breed
 Collie
@@ -150,6 +150,22 @@ $ hsh keys fruits
 favorite
 least_favorite
 most_colorful
+$
+```
+
+
+### hsh_list
+
+Display a sorted list of all hashes defined using hashi.sh
+
+Required parameters: none
+
+```bash
+$ hsh set dogs breed Collie
+$ hsh set cats breed Siamese
+$ hsh_list
+cats
+dogs
 $
 ```
 
