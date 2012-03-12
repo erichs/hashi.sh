@@ -34,7 +34,7 @@ hsh_set() { local hash=${1:-} key=${2:-} value=${3:-}
 	```
 	end
     __check_args hash key value || return 1
-	local fullkey=$(__generate_key "$hash" "$key")
+    local fullkey=$(__generate_key "$hash" "$key")
     eval "$fullkey='$value'" || return 1
     return 0
 }
@@ -335,8 +335,8 @@ _delim=qXzJj
 
 __generate_key() { local hash=${1:-} key=${2:-}
     local str="__${_delim}_${hash}_${_delim}_${key}"  # separate hashes and keys with unlikely yet searchable string.
-    local esc=${str//-/___}				# bash doesn't allow hyphens in variable names. bummer.
-	echo ${esc// /JxXzQ}				# also, escape spaces with a statistically unlikely string.
+    local esc=${str//-/___}                           # bash doesn't allow hyphens in variable names. bummer.
+    echo ${esc// /JxXzQ}                              # also, escape spaces with a statistically unlikely string.
 }
 
 __unset_hash() { local hash=${1:-}
@@ -364,7 +364,7 @@ __check_args() { local arg=${1:-}
             return 1
         fi
         shift
-		arg=${1:-}
+        arg=${1:-}
     done
     return 0
 }
@@ -384,28 +384,28 @@ __all_hsh_methods() {
 }
 
 __not_for_dsl_methods() {
-	echo 'hsh_declare'
-	echo 'hsh_list'
+    echo 'hsh_declare'
+    echo 'hsh_list'
 }
 
 __hsh_dsl_methods() {
-	local method excluded
+    local method excluded
     (   # define helper function with 'private' scope
-		is_excluded() { local method=$1
-			local excluded
-    	    for excluded in $(__not_for_dsl_methods); do
-				if [ $method == $excluded ]; then
-					return 0
-				fi
-			done
-			return 1
-		}
+        is_excluded() { local method=$1
+        local excluded
+            for excluded in $(__not_for_dsl_methods); do
+                if [ $method == $excluded ]; then
+                    return 0
+                fi
+            done
+            return 1
+        }
 
-    	for method in $(__all_hsh_methods); do
-			if ! is_excluded $method; then
-				echo $method
-			fi
-    	done
+        for method in $(__all_hsh_methods); do
+            if ! is_excluded $method; then
+                echo $method
+            fi
+        done
     )
 }
 
@@ -420,7 +420,7 @@ __usage() {
     echo "   where op is one of:"
     local prefix="hsh_"
     for method in $(__hsh_dsl_methods); do
-		echo "   ${method#$prefix}"  # auto-generate op list
+        echo "   ${method#$prefix}"  # auto-generate op list
     done
 }
 
