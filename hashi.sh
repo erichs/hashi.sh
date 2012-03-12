@@ -238,6 +238,8 @@ hsh_has() { local hash=${1:-} key=${2:-}
 
 	returns 1 (failure) if hash does not.
 
+	Required parameters: hash
+
 	```bash
 	# assume hash 'shells' contains:
 	# 1 => ksh, 2 => zsh, 3 => bash, 4 = > sh
@@ -259,6 +261,8 @@ hsh_empty() { local hash=${1:-}
 	returns 0 (success) if hash is empty.
 
 	returns 1 (failure) if hash is not.
+
+	Required parameters: hash
 
 	```bash
 	# assume hash 'foo' contains:
