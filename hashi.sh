@@ -280,7 +280,7 @@ hsh_empty() { local hash=${1:-}
 
 hsh_declare() { local hash=${1:-}
     optional_doc <<-'end' && return 0
-	### hsh_declare
+	### hsh_drclare
 
 	Declare a wrapper function around 'hsh()'. This allows you to eliminate one argument
 	from all subsequent api calls for that hash.
