@@ -287,7 +287,7 @@ hsh_declare() { local hash=${1:-}
 
 	Required parameters: hash
 
-	```bash
+	``bash
 	$ hsh_declare dogs
 	$ dogs set breed Collie
 	$ dogs get breed
