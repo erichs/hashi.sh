@@ -31,6 +31,9 @@ main() {
         label ensure $method bash example is closed
         assert example_is_closed $method
 
+        label ensure $method has example code
+        assert has_example_code $method
+
         label ensure $method has required parameters list
         assert has_param_list $method
 
@@ -38,6 +41,11 @@ main() {
     done
     unset __display_documentation
 
+}
+
+has_example_code() { local method=$1
+    local docname=${method#hsh_}
+    [ $(doclines $method $docname) -gt 1 ]
 }
 
 has_param_list() { local method=$1
@@ -53,8 +61,8 @@ has_bash_example() { local method=$1
 }
 
 has_triple_octothorpe() { local method=$1
-        local docname=${method#hsh_}
-        [ $(doclines $method "### $docname") -gt 0 ] || [ $(doclines $method "### $method") -gt 0 ]
+    local docname=${method#hsh_}
+    [ $(doclines $method "### $docname") -gt 0 ] || [ $(doclines $method "### $method") -gt 0 ]
 }
 
 
