@@ -75,6 +75,8 @@ returns 0 (success) if hash is empty.
 
 returns 1 (failure) if hash is not.
 
+Required parameters: hash
+
 ```bash
 # assume hash 'foo' contains:
 # one => 1
@@ -127,6 +129,8 @@ does hash contain key?
 returns 0 (success) if hash contains key.
 
 returns 1 (failure) if hash does not.
+
+Required parameters: hash
 
 ```bash
 # assume hash 'shells' contains:
