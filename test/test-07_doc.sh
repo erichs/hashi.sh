@@ -17,7 +17,10 @@ main() {
     discreet_echo 'DOCUMENTATION...\n'
 
     __display_documentation=1
-    local method text
+    local method
+
+    label ensure non-dsl plus dsl methods sum
+    assert sum_methods
 
     for method in $(__all_hsh_methods); do
         docsetup $method
@@ -41,6 +44,13 @@ main() {
     done
     unset __display_documentation
 
+}
+
+sum_methods() {
+    local non_dsl_methods=$(__not_for_dsl_methods | wc -w)
+    local dsl_methods=$(__hsh_dsl_methods | wc -w)
+    local all_methods=$(__all_hsh_methods | wc -w)
+    [ $(( $non_dsl_methods + $dsl_methods )) == $all_methods ]
 }
 
 has_example_code() { local method=$1
