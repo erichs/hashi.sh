@@ -293,7 +293,7 @@ hsh_declare() { local hash=${1:-}
 	$ dogs get breed
 	Collie
 	$
-	```
+	``
 	end
     __check_args hash || return 1
     eval "$hash() { op=\$1; shift; hsh \$op $hash \$*; }"
