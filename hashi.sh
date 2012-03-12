@@ -126,7 +126,7 @@ hsh_clear() { local hash=${1:-}
 	```bash
 	# assume hash 'cars' contains:
 	# fastest => 'Bugatti Veyron', slowest => 'Smart Coupe'
-	$ hsh del cars
+	$ hsh clear cars
 	$ hsh size cars
 	0
 	$
