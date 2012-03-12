@@ -73,5 +73,5 @@ docsetup() { local method=$1
 docteardown() { local method=$1
         rm /tmp/$method.txt
 }
-VERBOSE=1
+
 main
