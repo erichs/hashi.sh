@@ -278,7 +278,7 @@ hsh_empty() { local hash=${1:-}
     return 0
 }
 
-hsh_declare() { local hash=$1
+hsh_declare() { local hash=${1:-}
     optional_doc <<-'end' && return 0
 	### hsh_declare
 
