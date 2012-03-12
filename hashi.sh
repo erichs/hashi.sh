@@ -300,7 +300,7 @@ hsh_declare() { local hash=${1:-}
 	```
 	end
     __check_args hash || return 1
-    eval "$hash() { op=\$1; shift; hsh \$op $hash \$*; }"
+    eval "$hash() { op=\${1:-}; shift; hsh '\$op' $hash \$*; }"
 }
 
 hsh_list() {
