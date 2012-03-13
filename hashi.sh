@@ -12,7 +12,7 @@ hsh() { local op=${1:-}
     for method in $(__hsh_dsl_methods); do
         if [ "hsh_$op" == $method ]; then
             shift
-            $method "$1" "$2" "$3"
+            $method "${1:-}" "${2:-}" "${3:-}"
             return $?
         fi
     done
