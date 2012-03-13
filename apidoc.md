@@ -67,30 +67,6 @@ $
 ```
 
 
-### empty
-
-is hash empty of all key/value pairs?
-
-returns 0 (success) if hash is empty.
-
-returns 1 (failure) if hash is not.
-
-Required parameters: hash
-
-```bash
-# assume hash 'foo' contains:
-# one => 1
-$ hsh del foo one
-$ if hsh empty foo; then echo 'hash foo is empty'; fi
-hash foo is empty
-
-# also, for an uninitialized hash:
-$ if hsh empty bar; then echo 'hash bar is empty'; fi
-hash bar is empty
-$
-```
-
-
 ### get
 
 Gets a hash value for a given key.
@@ -122,7 +98,7 @@ $
 ```
 
 
-### has
+### haskey
 
 does hash contain key?
 
@@ -135,8 +111,32 @@ Required parameters: hash
 ```bash
 # assume hash 'shells' contains:
 # 1 => ksh, 2 => zsh, 3 => bash, 4 = > sh
-$ if hsh has shells csh; then echo 'csh is supported'; else echo 'csh is unsupported'; fi
+$ if hsh haskey shells csh; then echo 'csh is supported'; else echo 'csh is unsupported'; fi
 csh is unsupported
+$
+```
+
+
+### isempty
+
+is hash empty of all key/value pairs?
+
+returns 0 (success) if hash is empty.
+
+returns 1 (failure) if hash is not.
+
+Required parameters: hash
+
+```bash
+# assume hash 'foo' contains:
+# one => 1
+$ hsh del foo one
+$ if hsh isempty foo; then echo 'hash foo is empty'; fi
+hash foo is empty
+
+# also, for an uninitialized hash:
+$ if hsh isempty bar; then echo 'hash bar is empty'; fi
+hash bar is empty
 $
 ```
 
@@ -198,6 +198,24 @@ Required parameters: hash
 $ hsh size cars
 2
 $
+```
+
+
+### hsh_undeclare
+
+Remove the wrapper function around 'hsh()'. NOTE: this does not remove the hash referenced by 'declare'. To remove a hash you must use 'clear'.
+
+Required parameters: hash
+
+```bash
+$ hsh_declare dogs
+$ dogs set breed Collie
+$ dogs get breed
+Collie
+$ hsh_undeclare dogs  # remove the convenience method named 'dogs'
+dogs
+dogs: command not found
+$ hsh clear dogs  # fully remove the hash
 ```
 
 
