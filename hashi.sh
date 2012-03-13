@@ -303,6 +303,29 @@ hsh_declare() { local hash=${1:-}
     eval "$hash() { op=\${1:-}; shift; hsh \$op $hash \$*; }"
 }
 
+hsh_undeclare() { local hash=${1:-}
+    optional_doc <<-'end' && return 0
+	### hsh_undeclare
+
+	Remove the wrapper function around 'hsh()'. NOTE: this does not remove the hash referenced by 'declare'. To remove a hash you must use 'clear'.
+
+	Required parameters: hash
+
+	```bash
+	$ hsh_declare dogs
+	$ dogs set breed Collie
+	$ dogs get breed
+	Collie
+	$ hsh_undeclare dogs  # remove the convenience method named 'dogs'
+	dogs
+	dogs: command not found
+	$ hsh clear dogs  # fully remove the hash
+	```
+	end
+    __check_args hash || return 1
+    unset -f $hash
+}
+
 hsh_list() {
     optional_doc <<-'end' && return 0
 	### hsh_list
@@ -385,6 +408,7 @@ __all_hsh_methods() {
 
 __not_for_dsl_methods() {
     echo 'hsh_declare'
+    echo 'hsh_undeclare'
     echo 'hsh_list'
 }
 
