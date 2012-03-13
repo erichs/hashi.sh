@@ -228,9 +228,9 @@ hsh_getall() { local hash=${1:-}
     hsh_each $hash 'echo $key: $value'
 }
 
-hsh_has() { local hash=${1:-} key=${2:-}
+hsh_haskey() { local hash=${1:-} key=${2:-}
     optional_doc <<-'end' && return 0
-	### has
+	### haskey
 
 	does hash contain key?
 
@@ -243,7 +243,7 @@ hsh_has() { local hash=${1:-} key=${2:-}
 	```bash
 	# assume hash 'shells' contains:
 	# 1 => ksh, 2 => zsh, 3 => bash, 4 = > sh
-	$ if hsh has shells csh; then echo 'csh is supported'; else echo 'csh is unsupported'; fi
+	$ if hsh haskey shells csh; then echo 'csh is supported'; else echo 'csh is unsupported'; fi
 	csh is unsupported
 	$
 	```
@@ -353,7 +353,7 @@ __unset_hash() { local hash=${1:-}
 __unset_key() { local hash=${1:-} key=${2:-}
     local fullkey=$(__generate_key "$hash" "$key")
     unset -v $fullkey
-    hsh_has "$hash" "$key" && return 1
+    hsh_haskey "$hash" "$key" && return 1
     return 0
 }
 
