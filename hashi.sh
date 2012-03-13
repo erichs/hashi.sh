@@ -12,7 +12,7 @@ hsh() { local op=${1:-}
     for method in $(__hsh_dsl_methods); do
         if [ "hsh_$op" == $method ]; then
             shift
-            $method $*
+            $method "$1" "$2" "$3"
             return $?
         fi
     done
@@ -35,7 +35,7 @@ hsh_set() { local hash=${1:-} key=${2:-} value=${3:-}
 	end
     __check_args hash key value || return 1
     local fullkey=$(__generate_key "$hash" "$key")
-    eval "$fullkey='$value'" || return 1
+    eval "$fullkey='${value}'" || return 1
     return 0
 }
 
