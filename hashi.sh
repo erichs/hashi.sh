@@ -89,7 +89,7 @@ hsh_keys() { local hash=${1:-}
     local vars
     eval vars="\${!$prefix*}"
     for var in $vars; do
-        echo ${var#$prefix}
+        echo "$(__unescape_key ${var#$prefix})"
     done
 }
 
@@ -360,6 +360,11 @@ __generate_key() { local hash=${1:-} key=${2:-}
     local str="__${_delim}_${hash}_${_delim}_${key}"  # separate hashes and keys with unlikely yet searchable string.
     local esc=${str//-/___}                           # bash doesn't allow hyphens in variable names. bummer.
     echo ${esc// /JxXzQ}                              # also, escape spaces with a statistically unlikely string.
+}
+
+__unescape_key() { local key=$1
+    local esc=${key//___/-}
+    echo ${esc//JxXzQ/ }
 }
 
 __unset_hash() { local hash=${1:-}
