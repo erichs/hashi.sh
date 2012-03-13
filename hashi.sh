@@ -433,7 +433,7 @@ __hsh_dsl_methods() {
     )
 }
 
-__generate_api() {
+__generate_apidoc() {
     __display_documentation=1
     for method in $(__all_hsh_methods); do eval $method; echo ; echo ;  done > apidoc.md
     unset __display_documentation
