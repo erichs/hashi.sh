@@ -29,7 +29,7 @@ main() {
     company set staff roles
     company set twitter_username rubadub
 
-    # now, pretty-print the hash:
+    # finally, pretty-print the hash:
     print_descending company
 }
 
@@ -70,26 +70,3 @@ print_descending() { local hash=$1
 }
 
 main
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
