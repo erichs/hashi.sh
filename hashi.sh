@@ -252,9 +252,9 @@ hsh_has() { local hash=${1:-} key=${2:-}
     return $(hsh_get $hash $key >/dev/null)
 }
 
-hsh_empty() { local hash=${1:-}
+hsh_isempty() { local hash=${1:-}
     optional_doc <<-'end' && return 0
-	### empty
+	### isempty
 
 	is hash empty of all key/value pairs?
 
@@ -268,11 +268,11 @@ hsh_empty() { local hash=${1:-}
 	# assume hash 'foo' contains:
 	# one => 1
 	$ hsh del foo one
-	$ if hsh empty foo; then echo 'hash foo is empty'; fi
+	$ if hsh isempty foo; then echo 'hash foo is empty'; fi
 	hash foo is empty
 
 	# also, for an uninitialized hash:
-	$ if hsh empty bar; then echo 'hash bar is empty'; fi
+	$ if hsh isempty bar; then echo 'hash bar is empty'; fi
 	hash bar is empty
 	$
 	```
@@ -340,13 +340,13 @@ __generate_key() { local hash=${1:-} key=${2:-}
 }
 
 __unset_hash() { local hash=${1:-}
-    $(hsh_empty "$hash")  && return 1    # unsetting empty hash is error
+    $(hsh_isempty "$hash")  && return 1    # unsetting empty hash is error
 
     for key in $(hsh_keys "$hash"); do
         __unset_key "$hash" "$key"
     done
 
-    ! $(hsh_empty "$hash") && return 1
+    ! $(hsh_isempty "$hash") && return 1
     return 0
 }
 
