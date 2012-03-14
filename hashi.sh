@@ -85,11 +85,11 @@ hsh_keys() { local hash=${1:-}
 	```
 	end
     __check_args hash || return 1
-    local prefix=$(__generate_key "$hash")
-    local vars
-    eval vars="\${!$prefix*}"
+    local key vars
+    __eval_assign_hashvars "$hash" vars
     for var in $vars; do
-        echo "$(__unescape_key ${var#$prefix})"
+        key=$(__get_key_from_var $var)
+        echo "$(__unescape_key $key)"
     done
 }
 
@@ -110,8 +110,10 @@ hsh_size() { local hash=${1:-}
 	```
 	end
     __check_args hash || return 1
-    local size=0
-    for key in $(hsh_keys "$hash"); do size=$((size + 1)); done
+
+    local var vars size=0
+    __eval_assign_hashvars "$hash" vars
+    for var in $vars; do size=$((size + 1)); done
     echo $size
 }
 
@@ -457,4 +459,17 @@ __outermost_function() {
     # returns name of 'outermost' function: last element of FUNCNAME[].
     local funclist=${FUNCNAME[@]}    # space-delimited list of function callers, arbitrary depth
     echo ${funclist##* }             # eat everything up through the last space
+}
+
+__get_hash_prefix() { local hash=$1
+    echo $(__generate_key "$hash")
+}
+
+__eval_assign_hashvars() { local hash=$1 var=$2
+    local prefix=$(__get_hash_prefix $hash)
+    eval $var="\${!$prefix*}"
+}
+
+__get_key_from_var() { local var=$1
+    echo ${var##*${_delim}_}
 }
