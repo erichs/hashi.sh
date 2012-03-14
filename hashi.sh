@@ -466,7 +466,7 @@ __get_hash_prefix() { local hash=$1
 }
 
 __eval_assign_hashvars() { local hash=$1 var=$2
-    local prefix=$(__get_hash_prefix $hash)
+    local prefix=$(__get_hash_prefix "$hash")
     eval $var="\${!$prefix*}"
 }
 
