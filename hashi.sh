@@ -206,7 +206,7 @@ hsh_values() { local hash=${1:-}
 	```
 	end
     __check_args hash || return 1
-    hsh_each $hash 'echo $value'
+    hsh_each "$hash" 'echo $value'
 }
 
 hsh_getall() { local hash=${1:-}
@@ -347,11 +347,16 @@ hsh_list() {
 	end
     local key allkeys prefix="__${_delim}_"
     allkeys=$(eval "echo \${!$prefix*}")
-    for key in $allkeys; do
-        eval "trim=\${key%_${_delim}_*}"
+    (
+      trim_hash_from_key() {
+        local trim fat
+        eval "trim=\${item%_${_delim}_*}"
         eval "fat=\${trim#*${_delim}_}"
         echo "$(__unescape_key $fat)"
-    done | sort -u
+      }
+
+      __eachitem $allkeys trim_hash_from_key | sort -u
+    )
 }
 
 #### internal helper methods & vars
@@ -472,4 +477,13 @@ __eval_assign_hashvars() { local hash=$1 var=$2
 
 __get_key_from_var() { local var=$1
     echo ${var##*${_delim}_}
+}
+
+__eachitem() { local list=$1 code=$2
+    OIFS=$IFS
+    IFS=' '
+    for item in $list; do
+    	eval $code
+    done
+    IFS=$OIFS
 }
