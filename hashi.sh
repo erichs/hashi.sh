@@ -350,7 +350,7 @@ hsh_list() {
     for key in $allkeys; do
         eval "trim=\${key%_${_delim}_*}"
         eval "fat=\${trim#*${_delim}_}"
-        echo $fat
+        echo "$(__unescape_key $fat)"
     done | sort -u
 }
 
