@@ -345,14 +345,14 @@ hsh_list() {
 	$
 	```
 	end
-    local key allkeys prefix="__${_delim}_"
-    allkeys=$(eval "echo \${!$prefix*}")
+    local prefix="__${_delim}_"
+    local allkeys=$(eval "echo \${!$prefix*}")
     (
       trim_hash_from_key() {
-        local trim fat
-        eval "trim=\${item%_${_delim}_*}"
-        eval "fat=\${trim#*${_delim}_}"
-        echo "$(__unescape_key $fat)"
+        local prehsh posthsh
+        eval "prehsh=\${item%_${_delim}_*}"  # 'item' is set in eachitem iterator
+        eval "posthsh=\${prehsh#*${_delim}_}"
+        echo "$(__unescape_key $posthsh)"
       }
 
       __eachitem $allkeys trim_hash_from_key | sort -u
