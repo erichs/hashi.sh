@@ -355,7 +355,7 @@ hsh_list() {
         echo "$(__unescape_key $posthsh)"
       }
 
-      __eachitem $allkeys trim_hash_from_key | sort -u
+      __eachitem_in_string $allkeys trim_hash_from_key | sort -u
     )
 }
 
@@ -479,11 +479,20 @@ __get_key_from_var() { local var=$1
     echo ${var##*${_delim}_}
 }
 
-__eachitem() { local list=$1 code=$2
+__eachitem_in_string() { local string=$1 code=$2
     OIFS=$IFS
     IFS=' '
+    for item in $string; do
+        eval $code
+    done
+    IFS=$OIFS
+}
+__eachitem_in_list() { local list=$1 code=$2
+    OIFS=$IFS
+    IFS='
+'
     for item in $list; do
-    	eval $code
+        eval $code
     done
     IFS=$OIFS
 }
