@@ -355,7 +355,7 @@ hsh_list() {
         echo "$(__unescape_key $posthsh)"
       }
 
-      __eachitem_in_string $allkeys trim_hash_from_key | sort -u
+      __eachitem_in_string "$allkeys" trim_hash_from_key | sort -u
     )
 }
 
@@ -483,7 +483,7 @@ __eachitem_in_string() { local string=$1 code=$2
     OIFS=$IFS
     IFS=' '
     for item in $string; do
-        eval $code
+        eval "$code"
     done
     IFS=$OIFS
 }
