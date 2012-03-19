@@ -347,16 +347,7 @@ hsh_list() {
 	end
     local prefix="__${_delim}_"
     local allkeys=$(eval "echo \${!$prefix*}")
-    (
-      trim_hash_from_key() {
-        local prehsh posthsh
-        eval "prehsh=\${item%_${_delim}_*}"  # 'item' is set in eachitem iterator
-        eval "posthsh=\${prehsh#*${_delim}_}"
-        echo "$(__unescape_key $posthsh)"
-      }
-
-      __eachitem_in_string "$allkeys" trim_hash_from_key | sort -u
-    )
+    __eachitem_in_string "$allkeys" trim_hash_from_key | sort -u
 }
 
 #### internal helper methods & vars
@@ -483,7 +474,7 @@ __eachitem_in_string() { local string=$1 code=$2
     OIFS=$IFS
     IFS=' '
     for item in $string; do
-        eval "$code"
+        eval $code
     done
     IFS=$OIFS
 }
@@ -496,3 +487,11 @@ __eachitem_in_list() { local list=$1 code=$2
     done
     IFS=$OIFS
 }
+
+trim_hash_from_key() {
+    local prehsh posthsh
+    eval "prehsh=\${item%_${_delim}_*}"  # 'item' is set in eachitem iterator
+    eval "posthsh=\${prehsh#*${_delim}_}"
+    echo "$(__unescape_key $posthsh)"
+}
+
