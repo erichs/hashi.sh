@@ -1,0 +1,214 @@
+#!/bin/bash
+
+# new to this script?  Try running it with '-h' for usage,
+# or issue 'perldoc <scriptname>' for full manual documentation.
+
+set -o errexit # (set -e) exit when any command returns non-zero
+set -o nounset  # (set -u) exit when any reference is made to an uninitialized variable
+
+VERSION=0.6
+
+main() {
+    while getopts helo:p:t:v:g:-: arg
+    do
+        case $arg in
+            h)    display_help; exit 0;;
+            e)    edit_configuration; exit 0;;
+            l)    display_list; exit 0;;
+            g)    grep_for $OPTARG; exit 0;;
+            t)    find_by_type $OPTARG; exit 0;;
+            p)    find_by_place $OPTARG; exit 0;;
+            o)    find_by_os $OPTARG; exit 0;;
+            v)    find_by_vmhost $OPTARG; exit 0;;
+            -)    case "${OPTARG}" in
+                      help)     display_help; exit 0;;
+                      edit)     edit_configuration; exit 0;;
+                      list)     display_list; exit 0;;
+                      os)       find_by_os $2; exit 0;;
+                      grep)     grep_for $2; exit 0;;
+                      type)     find_by_type $2; exit 0;;
+                      vmhost)   find_by_vmhost $2; exit 0;;
+                      place)    find_by_place $2; exit 0;;
+                      *)        display_help; fatal_error "illegal option: $OPTARG";;
+                  esac;;
+            ?)    display_help
+                  fatal_error "illegal option: $arg";;
+        esac
+    done
+
+    if [ $# -ne 1 ]; then
+        display_help
+        fatal_error "missing host parameter"
+    fi
+
+    host=$1
+
+    if hsh_isempty $host; then
+        fatal_error "Couldn't find host $host, try '$PROGNAME --list' for available hosts"
+    fi
+
+    hsh_each $host print_keys_and_values
+
+    exit 0
+}
+
+PROGNAME=$(basename $0)
+CONF_FILE="./hosts.inc"
+
+[ ! -f "$CONF_FILE" ] && fatal_error "Couldn't find $CONF_FILE! Ensure the Scripts Git repo is cloned to your ~/scripts directory."
+source $CONF_FILE
+
+function fatal_error      # Ex usage: fatal_error "$LINENO: An error has occurred."
+{
+    echo "${PROGNAME}: ${1:-"Unknown Error"}" 1>&2
+    exit 1
+}
+
+function display_help     # tell perldoc to parse this file for usage
+{
+    echo "$PROGNAME, v$VERSION"
+    pod2usage -verbose 1 $0 || true  # ignore failure RC
+}
+
+function display_list {
+    {
+        local host
+        printf "%-30s%-s\n" Name Role
+        printf "%-30s%-s\n" ---- ----
+        for host in $(hsh_list); do
+            # skip host used by test fixture
+            [ "$host" == "testtarget" ] && continue
+            print_name_and_role "$host"
+        done
+    } | less
+}
+
+function find_by_os { local osval=$1
+    for host in $(hsh_list); do
+        hsh_each $host 'find_by_key_val "os" "$osval"'
+    done
+}
+
+function find_by_type { local type=$1
+    for host in $(hsh_list); do
+        hsh_each $host 'find_by_key_val "servertype" "$type"'
+    done
+}
+
+function find_by_vmhost { local vmhost=$1
+    for host in $(hsh_list); do
+        hsh_each $host 'find_by_key_val "vmhost" "$vmhost"'
+    done
+}
+
+function find_by_place { local place=$1
+    for host in $(hsh_list); do
+        hsh_each $host 'find_by_key_val "location" "$place"'
+    done
+}
+
+edit_configuration() {
+    vi $CONF_FILE
+}
+
+function print_name_and_role { local name="$1"
+   local role="$(hsh_get "$host" role)"
+   printf "%-30s%-s\n" "$name" "$role"
+}
+
+function print_keys_and_values {
+    # intended for use as a hsh_each iterator
+    if [ "$key" == "testtarget" ]; then
+        return  # skip host used by test fixture
+    fi
+
+    printf "%-30s%-s\n" "$key" "$value"
+}
+
+function find_by_key_val { local tkey=$1 tval=$2
+    # intended for use as a hsh_each iterator
+    if [[ $key == "$tkey" && $value == "$tval" ]]; then
+        echo "$hash"
+    fi
+}
+
+function grep_for { local str=$1
+    set +o errexit
+    shopt -s nocasematch
+    for host in $(hsh_list); do
+        hsh_each $host '[[ $value =~ $str ]] && printf "%-20s%-30s\"%-s\"\n" "$host" "$key" "$value"'
+    done
+}
+
+main $*
+: <<=cut
+
+==head1 NAME
+
+B<411> - Retrieve brief description of servers
+
+=head1 SYNOPSIS
+
+B<411> [ options ] hostname
+
+=head1 OPTIONS
+
+=over 4
+
+=item B<-h> or B<--help>
+
+display this help
+
+=item B<-e> or B<--edit>
+
+open host configuration file in vi
+
+=item B<-l> or B<--list>
+
+display host summary list
+
+=item B<-g> <string> or B<--grep> <string>
+
+grep all hash values and show matches
+
+=item B<-o> <string> or B<--os> <string>
+
+show machines of OS type <string>
+
+=item B<-p> <string> or B<--place> <string>
+
+show machines located at place <string>, e.g. 'rtp'
+
+=item B<-t> <string> or B<--type> <string>
+
+show machines of servertype <string>, e.g. 'physical'
+
+=item B<-v> <string> or B<--vmhost> <string>
+
+show only machines hosted by vmhost <string>
+
+=back
+
+=head1 DESCRIPTION
+
+B<411>
+
+It will log all command output.
+
+=head1 VERSION
+
+B<v0.6>
+
+=head1 REQUIRES
+
+configuration file in repository, named hosts.inc
+
+=head1 AUTHOR
+
+Erich Smith, erichs on github
+
+=head1 COPYRIGHT
+
+This script is free.  Want it?  Use it!
+=cut
+
